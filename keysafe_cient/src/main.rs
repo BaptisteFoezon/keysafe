@@ -36,7 +36,7 @@ fn main() {
         println!("choix numéro 1");
     }
 
-}p
+}
 
 struct User{
     nom : String,
