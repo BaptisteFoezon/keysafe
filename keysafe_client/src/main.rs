@@ -43,9 +43,8 @@ fn users_store(id: &String, mdp: &String) -> std::io::Result<()> {
     let extension : String = ".txt".to_owned();
     id.to_owned().push_str(&extension);
     let mut file = File::create(id)?;
-    //let String id_txt = id;
-    println!("Voici le pointeur : {} .", &id);
-    file.write_all(mdp.as_bytes()).expect("Echec d'écriture");
+    println!("Voici le nom du fichier : {} .", &id);
+    file.write_all(mdp.as_bytes()).expect("Échec d'écriture");
     //file.write_all(nom<).expect("Echec d'écriture");
     Ok(())
 }
