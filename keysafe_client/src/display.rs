@@ -28,16 +28,12 @@ impl Interface for Terminal_Interface{
         let mut mdp1 = String::new();
         let mut mdp2 = String::new();
         println!("Création de votre compte :");
-        //println!(". Nom ");
-        //io::stdin().read_line(&mut nom).expect("Veuillez rentrez une valeur correct");
-        //f.write_all(b"Hello, world! ")?;
-        //println!(". Prénom ");
         io::stdin().read_line(&mut prenom).expect("Veuillez rentrez une valeur correct");
         println!(". Email :");
         io::stdin().read_line(&mut mail).expect("Veuillez rentrez une valeur correct");
         println!(". Mot de passe :");
         io::stdin().read_line(&mut mdp1).expect("Veuillez rentrez une valeur correct");
-        println!(". Mot de passe :");
+        println!(". Confirmez votre mot de passe :");
         io::stdin().read_line(&mut mdp2).expect("Veuillez rentrez une valeur correct");
         return user::new(nom, mail, mdp1)
 
