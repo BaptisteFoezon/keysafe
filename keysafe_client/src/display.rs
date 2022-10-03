@@ -1,16 +1,14 @@
 use std::io;
+use crate::user::{User, user};
+
 pub trait Interface {
     fn display_menu(&self);
-    fn create_acount(&self) -> user;
+    fn create_account(&self) -> user;
 }
 
-pub struct Terminal_Interface{
+pub struct Terminal_Interface{}
 
-}
-
-pub struct GUI_Interface{
-
-}
+pub struct GUI_Interface{}
 
 
 impl Interface for Terminal_Interface{
@@ -20,22 +18,25 @@ impl Interface for Terminal_Interface{
         println!("2. Se connecter ");
     }
 
-    fn  create_acount(&self) ->  user{
+    fn  create_account(&self) ->  Result<user, std::io::Error>{
 
-        let mut nom = String::new();
+        let mut nom_in = String::new();
         let mut prenom = String::new();
         let mut mail = String::new();
         let mut mdp1 = String::new();
         let mut mdp2 = String::new();
-
-        println!("Création de votre compte...");
-        println!("Adresse mail :");
-        io::stdin().read_line(&mut mail).expect("Veuillez rentrer une valeur correct");
-        println!("Mot de passe : ");
-        io::stdin().read_line(&mut mdp1).expect("Veuillez rentrer une valeur correct");
-        println!("Retapez votre mot de passe :");
-        io::stdin().read_line(&mut mdp2).expect("Veuillez rentrer une valeur correct");
-        return user::new(nom, mail, mdp1)
+        println!("Création de votre compte :");
+        println!(". Nom ");
+        io::stdin().read_line( &mut nom_in)?;
+        println!(". Prénom ");
+        io::stdin().read_line( &mut prenom)?;
+        println!(". Email ");
+        io::stdin().read_line( &mut mail)?;
+        println!(". mdp ");
+        io::stdin().read_line( &mut mdp1)?;
+        println!(". mdp ");
+        io::stdin().read_line( &mut mdp2)?;
+        Ok(user::new(nom_in.trim(), mail.trim(), mdp1.trim()))
 
     }
 }
@@ -46,31 +47,9 @@ impl Interface for GUI_Interface{
         println!("GUI")
     }
 
-    fn create_acount(&self )-> user {
+    fn create_account(&self )-> user {
         todo!()
     }
 }
 
-pub trait User{
-    fn new(name: String, email: String, mdp : String) -> user;
-
-}
-
-pub struct user{
-    pub name : String,
-    pub email : String,
-    pub mdp : String,
-
-}
-
-impl User for user{
-    fn new(name :String , email :String, mdp : String) -> user{
-        user{
-            name,
-            email,
-            mdp
-        }
-    }
-
-}
 
