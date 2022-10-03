@@ -14,7 +14,7 @@ use display::Interface;
 fn main() {
     let interface = display::Terminal_Interface {};
     interface.display_menu();
-    let user = interface.create_acount();
+    let user = interface.create_acount().expect("dsqdsq");
     println!("{:?}", user);
     let mdp_hash = bcrypt::hash(user.mdp).unwrap();
     users_store(&user.email, &mdp_hash);

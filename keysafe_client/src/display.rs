@@ -3,7 +3,7 @@ use crate::user::{User, user};
 
 pub trait Interface {
     fn display_menu(&self);
-    fn create_acount(&self) -> user;
+    fn create_account(&self) -> user;
 }
 
 pub struct Terminal_Interface{}
@@ -18,27 +18,25 @@ impl Interface for Terminal_Interface{
         println!("2. Se connecter ");
     }
 
-    fn  create_acount(&self) ->  user{
+    fn  create_account(&self) ->  Result<user, std::io::Error>{
 
-        let  nom_in = &mut "".to_string();
-        let  prenom = &mut "".to_string();
-        let  mail = &mut "".to_string();
-        let  mdp1 = &mut "".to_string();
-        let  mdp2 = &mut "".to_string();
+        let mut nom_in = String::new();
+        let mut prenom = String::new();
+        let mut mail = String::new();
+        let mut mdp1 = String::new();
+        let mut mdp2 = String::new();
         println!("Création de votre compte :");
         println!(". Nom ");
-        io::stdin().read_line( nom_in).expect("Veuillez rentrez une valeur correct");
-        //f.write_all(b"Hello, world! ")?;
+        io::stdin().read_line( &mut nom_in)?;
         println!(". Prénom ");
-        io::stdin().read_line( prenom).expect("Veuillez rentrez une valeur correct");
+        io::stdin().read_line( &mut prenom)?;
         println!(". Email ");
-        io::stdin().read_line( mail).expect("Veuillez rentrez une valeur correct");
+        io::stdin().read_line( &mut mail)?;
         println!(". mdp ");
-        io::stdin().read_line( mdp1).expect("Veuillez rentrez une valeur correct");
+        io::stdin().read_line( &mut mdp1)?;
         println!(". mdp ");
-        io::stdin().read_line( mdp2).expect("Veuillez rentrez une valeur correct");
-        return user::new(nom_in.trim().to_string(), mail.trim().to_string(), mdp1.trim().to_string())
-
+        io::stdin().read_line( &mut mdp2)?;
+        Ok(user::new(nom_in.trim(), mail.trim(), mdp1.trim()))
     }
 }
 
@@ -48,7 +46,7 @@ impl Interface for GUI_Interface{
         println!("GUI")
     }
 
-    fn create_acount(&self )-> user {
+    fn create_account(&self )-> user {
         todo!()
     }
 }
