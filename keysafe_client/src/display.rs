@@ -13,7 +13,7 @@ pub struct GUI_Interface{}
 
 impl Interface for Terminal_Interface{
     fn display_menu(&self) {
-        println!("Bienvenue dans keysafe !!");
+        println!("Bienvenue dans keysafe !");
         println!("1. Créer un compte");
         println!("2. Se connecter ");
     }
@@ -37,6 +37,7 @@ impl Interface for Terminal_Interface{
         println!(". mdp ");
         io::stdin().read_line( &mut mdp2)?;
         Ok(user::new(nom_in.trim(), mail.trim(), mdp1.trim()))
+
     }
 }
 

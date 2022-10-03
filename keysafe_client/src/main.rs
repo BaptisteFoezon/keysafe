@@ -19,15 +19,19 @@ fn main() {
     let mdp_hash = bcrypt::hash(user.mdp).unwrap();
     users_store(&user.email, &mdp_hash);
     println!("mot de pass hasher : {}", mdp_hash);
+
 }
 
 
 fn users_store(id: &String, mdp: &String) -> std::io::Result<()> {
-    let mut file = OpenOptions::new().write(true).append(true).open("users.txt").expect("Unable to open file");
-    //let String id_txt = id;
-    println!("Voici le pointeur : {} .", &id);
-    file.write_all(id.as_bytes()).expect("Echec d'écriture");
-    //file.write_all(nom<).expect("Echec d'écriture");
+    //let mut file = OpenOptions::new().write(true).append(true).open("users.txt").expect("Unable to open file");
+    let extension : String = ".txt".to_owned();
+    id.to_owned().push_str(&extension);
+    println!("Voici le pointeur id : {} ", &id);
+    println!("Voici le pointeur ext : {}", &extension);
+    let mut file = File::create(id)?;
+    file.write_all(mdp.as_bytes()).expect("Echec d'écriture");
     Ok(())
 }
 
+}
