@@ -5,6 +5,7 @@ pub trait Interface {
     fn display_menu(&self);
     fn display_create_account_success();
     fn create_account(&self) -> Result<user, std::io::Error>;
+    fn sign_in(&self) ;
 }
 
 pub struct Terminal_Interface{}
@@ -81,6 +82,10 @@ impl Interface for GUI_Interface{
     }
 
     fn create_account(&self )-> Result<user, std::io::Error> {
+        todo!()
+    }
+
+    fn sign_in(&self) {
         todo!()
     }
 }
