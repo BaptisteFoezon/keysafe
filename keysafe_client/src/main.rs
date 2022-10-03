@@ -17,7 +17,7 @@ fn main() {
     let user = interface.create_account().expect("dsqdsq");
     println!("{:?}", user);
     let mdp_hash = bcrypt::hash(user.mdp).unwrap();
-    users_store(&user.email, &mdp_hash);
+    users_store(&user.pseudo, &mdp_hash).expect("Une erreur est survenue");
     println!("mot de pass hasher : {}", mdp_hash);
 
 }

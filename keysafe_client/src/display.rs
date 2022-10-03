@@ -21,15 +21,12 @@ impl Interface for Terminal_Interface{
     fn  create_account(&self) ->  Result<user, std::io::Error>{
 
         let mut nom_in = String::new();
-        let mut prenom = String::new();
         let mut mail = String::new();
         let mut mdp1 = String::new();
         let mut mdp2 = String::new();
         println!("Création de votre compte :");
         println!(". Nom ");
         io::stdin().read_line( &mut nom_in)?;
-        println!(". Prénom ");
-        io::stdin().read_line( &mut prenom)?;
         println!(". Email ");
         io::stdin().read_line( &mut mail)?;
         println!(". mdp ");
