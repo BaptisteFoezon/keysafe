@@ -22,11 +22,11 @@ impl Interface for Terminal_Interface{
 
     fn  create_acount(&self) ->  user{
 
-        let mut nom = String::new();
-        let mut prenom = String::new();
-        let mut mail = String::new();
-        let mut mdp1 = String::new();
-        let mut mdp2 = String::new();
+        let  nom : &str;
+        let mut prenom : &str;
+        let mut mail : &str;
+        let mut mdp1 : &str;
+        let mut mdp2 : &str;
         println!("Création de votre compte :");
         io::stdin().read_line(&mut prenom).expect("Veuillez rentrez une valeur correct");
         println!(". Email :");
@@ -35,7 +35,7 @@ impl Interface for Terminal_Interface{
         io::stdin().read_line(&mut mdp1).expect("Veuillez rentrez une valeur correct");
         println!(". Confirmez votre mot de passe :");
         io::stdin().read_line(&mut mdp2).expect("Veuillez rentrez une valeur correct");
-        return user::new(nom, mail, mdp1)
+        return user::new(nom.trim() , mail.trim(), mdp1.trim())
 
     }
 }
@@ -52,19 +52,19 @@ impl Interface for GUI_Interface{
 }
 
 pub trait User{
-    fn new(name: String, email: String, mdp : String) -> user;
+    fn new(name: &str, email: &str, mdp : &str) -> user;
 
 }
 
 pub struct user{
-    pub name : String,
-    pub email : String,
-    pub mdp : String,
+    pub name : &str;
+    pub email : &str;
+    pub mdp : &str,
 
 }
 
 impl User for user{
-    fn new(name :String , email :String, mdp : String) -> user{
+    fn new(name :&str , email :&str, mdp : &str) -> user{
         user{
             name,
             email,

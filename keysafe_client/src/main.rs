@@ -18,15 +18,15 @@ fn main() {
     users_store(&user.email, &mdp_hash);
     println!("mot de pass hasher : {}", mdp_hash );
 
-struct User{
-    nom : String,
-    prenom : String,
-    email : String,
-    mdp : String,
+struct User<'a>{
+    nom : &'a str,
+    prenom : &'a str,
+    email : &'a str,
+    mdp : &'a str,
 }
 
-impl User{
-    fn new(nom : String, prenom : String, email : String, mdp : String)-> User{
+impl User<'a>{
+    fn new(nom : &str , prenom : &str, email : &str, mdp : &str)-> User{
         User{
             nom,
             prenom,
@@ -40,10 +40,11 @@ impl User{
 
 fn users_store(id: &String, mdp: &String) -> std::io::Result<()> {
     //let mut file = OpenOptions::new().write(true).append(true).open("users.txt").expect("Unable to open file");
-    let extension : String = ".txt".to_owned();
-    id.to_owned().push_str(&extension);
-    let mut file = File::create(id)?;
-    println!("Voici le nom du fichier : {} .", &id);
+    let mut extension : String = ".txt".to_owned(); 
+    let mut copy = id.to_owned();
+    copy.push_str(&extension);
+    println!("Voici le nom du fichier : {}", copy);
+    let mut file = File::create(copy)?;
     file.write_all(mdp.as_bytes()).expect("Échec d'écriture");
     //file.write_all(nom<).expect("Echec d'écriture");
     Ok(())
