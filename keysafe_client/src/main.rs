@@ -26,10 +26,11 @@ fn main() {
 fn users_store(id: &String, mdp: &String) -> std::io::Result<()> {
     //let mut file = OpenOptions::new().write(true).append(true).open("users.txt").expect("Unable to open file");
     let extension : String = ".txt".to_owned();
-    id.to_owned().push_str(&extension);
-    println!("Voici le pointeur id : {} ", &id);
+    let mut id_owned: String = id.to_owned();
+    id_owned.push_str(&extension);
+    println!("Voici le pointeur id : {} ", id_owned);
     println!("Voici le pointeur ext : {}", &extension);
-    let mut file = File::create(id)?;
+    let mut file = File::create(id_owned)?;
     file.write_all(mdp.as_bytes()).expect("Echec d'écriture");
     Ok(())
 }
