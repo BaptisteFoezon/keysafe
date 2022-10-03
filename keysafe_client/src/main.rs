@@ -33,19 +33,25 @@ impl StateMachine {
     }
     fn init(&mut self) {
         self.state = match self.state {
+            // only Init -> LogOut is valid
             State::Init => State::LogOut,
+            // The rest should fail
             _ => panic!("dsqdq")
         }
     }
     fn log_in(&mut self) {
         self.state = match self.state {
+            // only LogOut -> LogIn is valid
             State::LogOut => State::Login,
+            // The rest should fail
             _ => panic!("Transition impossible")
         }
     }
     fn log_out(&mut self) {
         self.state = match self.state {
+            // only Login -> LogOut is valid
             State::Login => State::LogOut,
+            // The rest should fail
             _ => panic!("Transition impossible")
         }
     }
