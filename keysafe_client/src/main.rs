@@ -16,24 +16,20 @@ mod login;
 fn main() {
     let interface = display::Terminal_Interface {};
     let mut choice = interface.display_menu().expect(" ");
-    if choice == "1" {
+    println!("{}", choice);
+    if choice.eq("1") {
+        println!("Creation d'un compte ...");
         let user = interface.create_account().expect("dsqdsq");
         println!("{:?}", user);
         let mdp_hash = bcrypt::hash(user.mdp).unwrap();
         users_store(&user.pseudo, &mdp_hash).expect("Une erreur est survenue");
         println!("mot de pass hasher : {}", mdp_hash);
         interface.display_create_account_success();
-    }
-
-    if choice == 1 {
-        //TODO: chercher le fichier : user.data et afficher ce qu'il y a dessus
-    }
-
-    if choice == 2 {
+    } else {
         interface.user_connected();
-        let mut main_choice = interface.main_menu()?;
-        if main_choice == 2 {
-            let login = interface.new_password()?;
+        let mut main_choice = interface.main_menu().expect("  ");
+        if main_choice == "2" {
+            let login = interface.new_password().expect("  ");
         }
     }
 }

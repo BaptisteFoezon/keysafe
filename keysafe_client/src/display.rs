@@ -6,11 +6,11 @@ use crate::user::{User, user};
 
 pub trait Interface {
     fn display_menu(&self) -> Result<String, std::io::Error>;
-    fn display_create_account_success();
+    fn display_create_account_success(&self);
     fn create_account(&self) -> Result<user, std::io::Error>;
     fn sign_in(&self);
     fn user_connected(&self);
-    fn main_menu(&self);
+    fn main_menu(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<login, std::io::Error>;
 }
 
@@ -26,10 +26,10 @@ impl Interface for Terminal_Interface {
         println!("1. Créer un compte");
         println!("2. Se connecter ");
         io::stdin().read_line(&mut display_menu_choice)?;
-        Ok(display_menu_choice)
+        Ok(display_menu_choice.trim().to_string())
     }
 
-    fn display_create_account_success() {
+    fn display_create_account_success(&self) {
         println!("Compte créé avec succès !");
     }
 
@@ -58,10 +58,13 @@ impl Interface for Terminal_Interface {
         println!("Vous êtes désormais connecté.");
     }
 
-    fn main_menu(&self) {
+    fn main_menu(&self) -> Result<String, std::io::Error> {
+        let mut var = String::new();
         println!("Que voulez vous faire ?");
         println!("1. Consulter mes mots de passe enregistrés");
         println!("2. Enregistrer un nouveau mot de passe");
+        io::stdin().read_line(&mut var)?;
+        Ok(var.trim().to_string())
     }
 
     fn new_password(&self) -> Result<login, std::io::Error> {
