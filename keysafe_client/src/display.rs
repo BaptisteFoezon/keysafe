@@ -3,6 +3,7 @@ use crate::user::{User, user};
 
 pub trait Interface {
     fn display_menu(&self);
+    fn display_create_account_success();
     fn create_account(&self) -> Result<user, std::io::Error>;
 }
 
@@ -16,6 +17,10 @@ impl Interface for Terminal_Interface{
         println!("Bienvenue dans keysafe !");
         println!("1. Créer un compte");
         println!("2. Se connecter ");
+    }
+
+    fn display_create_account_success() {
+        println!("Compte créé avec succes");
     }
 
     fn  create_account(&self) ->  Result<user, std::io::Error>{
@@ -42,6 +47,10 @@ impl Interface for Terminal_Interface{
 impl Interface for GUI_Interface{
     fn display_menu(&self) {
         println!("GUI")
+    }
+
+    fn display_create_account_success() {
+        todo!()
     }
 
     fn create_account(&self )-> Result<user, std::io::Error> {
