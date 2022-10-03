@@ -1,5 +1,5 @@
 pub trait User{
-    fn new(name: String, email: String, mdp : String) -> user;
+    fn new(name: &str, email: &str, mdp : &str) -> user;
 }
 
 #[derive(Debug)]

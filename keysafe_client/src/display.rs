@@ -3,7 +3,7 @@ use crate::user::{User, user};
 
 pub trait Interface {
     fn display_menu(&self);
-    fn create_account(&self) -> user;
+    fn create_account(&self) -> Result<user, std::io::Error>;
 }
 
 pub struct Terminal_Interface{}
@@ -47,7 +47,7 @@ impl Interface for GUI_Interface{
         println!("GUI")
     }
 
-    fn create_account(&self )-> user {
+    fn create_account(&self )-> Result<user, std::io::Error> {
         todo!()
     }
 }
