@@ -22,7 +22,7 @@ fn main() {
         let mdp_hash = bcrypt::hash(user.mdp).unwrap();
         users_store(&user.pseudo, &mdp_hash).expect("Une erreur est survenue");
         println!("mot de pass hasher : {}", mdp_hash);
-        interface.display_create_account_success()?;
+        interface.display_create_account_success();
     }
 
     if choice == 1 {
