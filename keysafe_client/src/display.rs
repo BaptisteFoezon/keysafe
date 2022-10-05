@@ -5,7 +5,8 @@ pub trait Interface {
     fn display_menu(&self);
     fn display_create_account_success();
     fn create_account(&self) -> Result<user, std::io::Error>;
-    fn sign_in(&self) ;
+    fn sign_in(&self);
+    fn get_choice(&self);
 }
 
 pub struct Terminal_Interface{}
@@ -25,7 +26,6 @@ impl Interface for Terminal_Interface{
     }
 
     fn  create_account(&self) ->  Result<user, std::io::Error>{
-
         let mut nom_in = String::new();
         let mut mail = String::new();
         let mut mdp1 = String::new();
@@ -52,6 +52,10 @@ impl Interface for Terminal_Interface{
         io::stdin().read_line(&mut mdp).expect(" ");
 
     }
+
+    fn get_choice(&self) {
+        todo!()
+    }
 }
 
 
@@ -69,6 +73,10 @@ impl Interface for GUI_Interface{
     }
 
     fn sign_in(&self) {
+        todo!()
+    }
+
+    fn get_choice(&self) {
         todo!()
     }
 }
