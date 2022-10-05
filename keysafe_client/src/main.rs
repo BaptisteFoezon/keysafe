@@ -4,11 +4,11 @@ extern crate core;
 
 
 use display::Interface;
-use stateMachine::SM;
-use crate::stateMachine::State::{Logged, LogOut};
+use state_machine::SM;
+use crate::state_machine::State::{Logged, LogOut};
 
 
-mod stateMachine;
+mod state_machine;
 mod display;
 mod user;
 

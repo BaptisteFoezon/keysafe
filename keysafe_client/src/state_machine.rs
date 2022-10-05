@@ -9,7 +9,7 @@ use pwhash::bcrypt;
 
 use crate::display::Terminal_Interface;
 use crate::Interface;
-use crate::stateMachine::State::{Logged, LogOut};
+use crate::state_machine::State::{Logged, LogOut};
 
 pub(crate) enum State {
     LogOut,
