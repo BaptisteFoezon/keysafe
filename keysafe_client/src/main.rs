@@ -13,7 +13,7 @@ use display::Interface;
 
 fn main() {
     let interface = display::Terminal_Interface {};
-    let mut choice u8 = interface.display_menu();
+    let mut choice = interface.display_menu();
     if choice == 1 {
         let user = interface.create_account().expect("dsqdsq");
         println!("{:?}", user);
@@ -24,6 +24,7 @@ fn main() {
     }
 
     if choice == 1 {
+
         //TODO: chercher le fichier : user.data et afficher ce qu'il y a dessus
     }
 
