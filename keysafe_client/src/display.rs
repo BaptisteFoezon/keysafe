@@ -8,7 +8,7 @@ pub trait Interface {
     fn display_menu(&self) -> Result<String, std::io::Error>;
     fn display_create_account_success(&self);
     fn create_account(&self) -> Result<user, std::io::Error>;
-    fn sign_in(&self);
+    fn sign_in(&self)-> Result<vec<&str>, std::io::Error>;
     fn user_connected(&self);
     fn main_menu(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<login, std::io::Error>;

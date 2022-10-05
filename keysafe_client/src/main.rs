@@ -8,12 +8,15 @@ use std::str;
 use pwhash::bcrypt;
 
 use display::Interface;
+use bouncer::Bouncer;
 
 //use login::login;
 
 mod display;
 mod user;
 mod login;
+mod bouncer;
+
 
 fn main() {
     let interface = display::Terminal_Interface {};
@@ -27,15 +30,15 @@ fn main() {
         users_store(&user.pseudo, &mdp_hash).expect("Une erreur est survenue");
         println!("mot de pass hasher : {}", mdp_hash);
         interface.display_create_account_success();
-        signing_in();
-    } else {
-        interface.user_connected();
-        let mut main_choice = interface.main_menu().expect("  ");
-        if main_choice == "2" {
-            let login1 = interface.new_password().expect("  ");
-            data_store(user, login1);
-            
+    }
+    if choice.eq("2") {
+
+        let mybouncer = bouncer::bouncer {};
+        let result = mybouncer.sign_in().expect("");
+        if result {
+            interface.user_connected();
         }
+
     }
 }
 
