@@ -24,6 +24,7 @@ pub struct SM {
 }
 
 impl SM {
+
     // when StateMachine is created state -> LogOut
     pub fn new(interface: Terminal_Interface) -> SM {
         SM {
@@ -31,7 +32,18 @@ impl SM {
             interface: interface,
         }
     }
-    pub fn ask_sign_in(&mut self) -> () {
+
+    pub fn start(&mut self){
+        match self.state {
+            LogOut => {
+                self.printMenu();
+                self.state = Logged;
+            }
+            _ => println!("pas le droit")
+        }
+    }
+
+    fn ask_sign_in(&mut self) -> () {
         match self.state {
             LogOut => {
                 self.interface.sign_in();
@@ -41,7 +53,7 @@ impl SM {
         }
     }
 
-    pub fn ask_sign_up(&mut self) -> () {
+    fn ask_sign_up(&mut self) -> () {
         match self.state {
             LogOut => {
                 let user = self.interface.create_account().expect("TODO: panic message");
@@ -55,7 +67,7 @@ impl SM {
         }
     }
 
-    pub fn logout(&mut self) -> () {
+    fn logout(&mut self) -> () {
         match self.state {
             Logged => {
                 println!("logOut");
@@ -67,7 +79,7 @@ impl SM {
         }
     }
 
-    pub fn printMenu(&mut self) -> () {
+    fn printMenu(&mut self) -> () {
         match self.state {
             LogOut => {
                 let mut choice = String::new();
