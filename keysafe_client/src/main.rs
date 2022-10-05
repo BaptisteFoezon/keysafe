@@ -10,69 +10,19 @@ use std::str;
 use pwhash::bcrypt;
 
 use display::Interface;
+use stateMachine::SM;
+use crate::stateMachine::State::{Logged, LogOut};
 
+
+mod stateMachine;
 mod display;
 mod user;
 
 
-enum State {
-    Init,
-    Login,
-    LogOut,
-    CreateAcount,
-    SignIn,
-}
-
-struct StateMachine {
-    state: State,
-}
-
-impl StateMachine {
-    fn new() -> Self {
-        StateMachine {
-            state: State::Init
-        }
-    }
-    fn init(&mut self) {
-        self.state = match self.state {
-            // only Init -> LogOut is valid
-            State::Init => State::LogOut,
-            // The rest should fail
-            _ => panic!("dsqdq")
-        }
-    }
-    fn log_in(&mut self) {
-        self.state = match self.state {
-            // only LogOut -> LogIn is valid
-            State::LogOut => State::Login,
-            // The rest should fail
-            _ => panic!("Transition impossible")
-        }
-    }
-    fn log_out(&mut self) {
-        self.state = match self.state {
-            // only Login -> LogOut is valid
-            State::Login => State::LogOut,
-            // The rest should fail
-            _ => panic!("Transition impossible")
-        }
-    }
-
-    fn signin(&mut self){
-        self.state = match self.state {
-            State::LogOut => State::SignIn,
-            // the rest should fail
-            _ => panic!("transition")
-        }
-    }
-}
-
 fn main() {
-    let mut stateMachine = StateMachine::new(); //create
-    // 'my_machine' is destroyed when it falls of the scope
-    stateMachine.init();
-    stateMachine.log_in();
-
+    let interface = display::Terminal_Interface {};
+    let mut st = SM::new();
+    st.printMenu();
     let interface = display::Terminal_Interface {};
     interface.display_menu();
     let user = interface.create_account().expect("dsqdsq");
