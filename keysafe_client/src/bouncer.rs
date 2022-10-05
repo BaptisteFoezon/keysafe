@@ -1,6 +1,6 @@
 pub trait Bouncer{
     fn new() -> bouncer;
-    fn sign_in(&self) -> Result<bool, std::io::Error>;
+    fn sign_in(&self, pseudo :&str , pwd : &str) -> Result<bool, std::io::Error>;
 }
 
 #[derive(Debug)]
@@ -12,7 +12,11 @@ impl Bouncer for bouncer{
         bouncer{
         }
     }
-    fn sign_in(&self) -> Result<bool, std::io::Error>{
-        return Ok(true);
+    fn sign_in(&self, pseudo : &str , pwd : &str) -> Result<bool, std::io::Error>{
+        return if pwd.to_string().eq("a") {
+            Ok(true)
+        } else {
+            Ok(false)
+        }
     }
 }

@@ -8,7 +8,7 @@ pub trait Interface {
     fn display_menu(&self) -> Result<String, std::io::Error>;
     fn display_create_account_success(&self);
     fn create_account(&self) -> Result<user, std::io::Error>;
-    fn sign_in(&self);
+    fn sign_in(&self)-> Result<vec<&str>, std::io::Error>;
     fn user_connected(&self);
     fn main_menu(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<login, std::io::Error>;
@@ -50,8 +50,17 @@ impl Interface for Terminal_Interface {
         Ok(user::new(nom_in.trim(), mail.trim(), mdp1.trim()))
     }
 
-    fn sign_in(&self) {
-        todo!()
+    fn sign_in(&self) -> Result< Vec, std::io::Error>{
+        let mut pseudo = String::new();
+        let mut mdp = String::new();
+        let mut result = Vec::new();
+        println!("Pseudo :");
+        io::stdin().read_line(&mut pseudo)?;
+        println!("mdp :");
+        io::stdin().read_line(&mut mdp)?;
+        result.push(pseudo.trim());
+        result.push(mdp.trim());
+        Ok(result)
     }
 
     fn user_connected(&self) {

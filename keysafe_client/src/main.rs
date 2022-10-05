@@ -31,16 +31,12 @@ fn main() {
     }
     if choice.eq("2") {
 
-        let bouncerdaz = bouncer::bouncer {};
-        let result = bouncerdaz.sign_in().expect("");
-        println!("{}",result);
-        interface.user_connected();
-        let mut main_choice = interface.main_menu().expect("  ");
-        if main_choice == "2" {
-            let login = interface.new_password().expect("  ");
-        }else {
-            print!("non valide")
+        let mybouncer = bouncer::bouncer {};
+        let result = mybouncer.sign_in().expect("");
+        if result {
+            interface.user_connected();
         }
+
     }
 }
 
