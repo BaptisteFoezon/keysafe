@@ -22,7 +22,7 @@ pub struct GUI_Interface {}
 impl Interface for Terminal_Interface {
     fn display_menu(&self) -> Result<String, std::io::Error> {
         let mut display_menu_choice = String::new();
-        println!("Bienvenue dans keysafe !");
+        println!("Bienvenue dans keysacafe !");
         println!("1. Créer un compte");
         println!("2. Se connecter ");
         io::stdin().read_line(&mut display_menu_choice)?;
@@ -50,8 +50,16 @@ impl Interface for Terminal_Interface {
         Ok(user::new(nom_in.trim(), mail.trim(), mdp1.trim()))
     }
 
-    fn sign_in(&self) {
-        todo!()
+    fn sign_in(&self) -> Result<user, std::io::Error> {
+        let mut pseudo = String::new();
+        let mut mail = String::new();
+        let mut mdp = String::new();
+        println!("Veuillez vous identifier...");
+        println!("Pseudo :");
+        io::stdin().read_line(&mut pseudo);
+        println!("Mot de passe :");
+        io::stdin.read_line(&mut mdp);
+        Ok(user::new(pseudo.trim(), mail.trim(), mdp.trim()))
     }
 
     fn user_connected(&self) {
