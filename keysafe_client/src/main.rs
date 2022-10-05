@@ -19,6 +19,8 @@ enum State {
     Init,
     Login,
     LogOut,
+    CreateAcount,
+    SignIn,
 }
 
 struct StateMachine {
@@ -53,6 +55,14 @@ impl StateMachine {
             State::Login => State::LogOut,
             // The rest should fail
             _ => panic!("Transition impossible")
+        }
+    }
+
+    fn signin(&mut self){
+        self.state = match self.state {
+            State::LogOut => State::SignIn,
+            // the rest should fail
+            _ => panic!("transition")
         }
     }
 }
