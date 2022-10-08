@@ -30,6 +30,7 @@ fn main() {
         users_store(&user.pseudo, &mdp_hash).expect("Une erreur est survenue");
         println!("mot de pass hasher : {}", mdp_hash);
         interface.display_create_account_success();
+    
     }
     if choice.eq("2") {
 
