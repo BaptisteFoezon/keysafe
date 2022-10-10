@@ -20,16 +20,14 @@ use std::str;
 
 use pwhash::bcrypt;
 
-use display::Interface;
 use bouncer::Bouncer;
 
 //use login::login;
 
-mod display;
-mod user;
+
 mod login;
 mod bouncer;
-
+mod tcp;
 
 
 fn main() {

@@ -9,9 +9,10 @@ use pwhash::bcrypt;
 
 use crate::display::Terminal_Interface;
 use crate::Interface;
-use crate::state_machine::State::{Logged, LogOut};
+use crate::state_machine::State::{IDLE, Logged, LogOut};
 
 pub(crate) enum State {
+    IDLE,
     LogOut,
     SignUp,
     Logged,
@@ -24,20 +25,19 @@ pub struct SM {
 }
 
 impl SM {
-
     // when StateMachine is created state -> LogOut
     pub fn new(interface: Terminal_Interface) -> SM {
         SM {
-            state: LogOut,
-            interface: interface,
+            state: IDLE,
+            interface,
         }
     }
 
-    pub fn start(&mut self){
+    pub fn start(&mut self) {
         match self.state {
-            LogOut => {
+            IDLE => {
+                self.state = LogOut;
                 self.printMenu();
-                self.state = Logged;
             }
             _ => println!("pas le droit")
         }
@@ -46,7 +46,7 @@ impl SM {
     fn ask_sign_in(&mut self) -> () {
         match self.state {
             LogOut => {
-                self.interface.sign_in();
+                self.interface.sign_in().expect("TODO: panic message");
                 self.state = Logged;
             }
             _ => println!("pas le droit")
@@ -56,6 +56,7 @@ impl SM {
     fn ask_sign_up(&mut self) -> () {
         match self.state {
             LogOut => {
+                println!("ask_sign_up from LogOut state");
                 let user = self.interface.create_account().expect("TODO: panic message");
                 self.state = Logged;
                 println!("{:?}", user);
@@ -85,7 +86,9 @@ impl SM {
                 let mut choice = String::new();
                 self.interface.display_menu();
                 io::stdin().read_line(&mut choice).expect("mauvaise saisie");
+                println!("dqdqsd");
                 if choice.trim().eq("1") {
+                    println!("printMenu :: vous avez demander à sign up ");
                     self.ask_sign_up();
                 }
             }

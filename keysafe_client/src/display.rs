@@ -5,10 +5,10 @@ use crate::login::{Login, login};
 use crate::user::{User, user};
 
 pub trait Interface {
-    fn display_menu(&self) -> Result<String, std::io::Error>;
+    fn display_menu(&self);
     fn display_create_account_success(&self);
     fn create_account(&self) -> Result<user, std::io::Error>;
-    fn sign_in(&self)-> Result<vec<&str>, std::io::Error>;
+    fn sign_in(&self)-> Result<user, std::io::Error>;
     fn user_connected(&self);
     fn main_menu(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<login, std::io::Error>;
@@ -20,13 +20,11 @@ pub struct GUI_Interface {}
 
 
 impl Interface for Terminal_Interface {
-    fn display_menu(&self) -> Result<String, std::io::Error> {
+    fn display_menu(&self)  {
         let mut display_menu_choice = String::new();
         println!("Bienvenue dans keysacafe !");
         println!("1. Créer un compte");
         println!("2. Se connecter ");
-        io::stdin().read_line(&mut display_menu_choice)?;
-        Ok(display_menu_choice.trim().to_string())
     }
 
     fn display_create_account_success(&self) {
@@ -60,54 +58,23 @@ impl Interface for Terminal_Interface {
         io::stdin().read_line(&mut pseudo).expect(" ");
         println!("Mdp :");
         io::stdin().read_line(&mut mdp).expect(" ");
+        Ok(user::new(&pseudo, "* &str */", &mdp))
 
-    }
-
-    fn get_choice(&self) {
-        todo!()
-    }
-}
-
-
-impl Interface for GUI_Interface{
-    fn display_menu(&self) {
-        println!("GUI")
-        io::stdin().read_line(&mut pseudo);
-        println!("Mot de passe :");
-        io::stdin.read_line(&mut mdp);
-        Ok(user::new(pseudo.trim(), mail.trim(), mdp.trim()))
     }
 
     fn user_connected(&self) {
-        println!("Vous êtes désormais connecté.");
+        todo!()
     }
 
-    fn main_menu(&self) -> Result<String, std::io::Error> {
-        let mut var = String::new();
-        println!("Que voulez vous faire ?");
-        println!("1. Consulter mes mots de passe enregistrés");
-        println!("2. Enregistrer un nouveau mot de passe");
-        io::stdin().read_line(&mut var)?;
-        Ok(var.trim().to_string())
+    fn main_menu(&self) -> Result<String, Error> {
+        todo!()
     }
 
-    fn new_password(&self) -> Result<login, std::io::Error> {
-        let mut url = String::new();
-        let mut mail = String::new();
-        let mut pwd = String::new();
-        println!("Indiquez le nom du site :");
-        io::stdin().read_line(&mut url)?;
-        println!("Indiquez votre identifiant :");
-        io::stdin().read_line(&mut mail)?;
-        println!("Indiquez votre mot de passe :");
-        io::stdin().read_line(&mut pwd)?;
-        Ok(login::new(url.trim(), mail.trim(), pwd.trim()))
-    }
-
-    fn get_choice(&self) {
+    fn new_password(&self) -> Result<login, Error> {
         todo!()
     }
 }
+
 
 
 
