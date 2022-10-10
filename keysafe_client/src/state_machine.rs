@@ -61,7 +61,6 @@ impl SM {
                 self.state = Logged;
                 println!("{:?}", user);
                 let mdp_hash = bcrypt::hash(user.mdp).unwrap();
-                users_store(&user.pseudo, &mdp_hash).expect("Une erreur est survenue");
                 println!("mot de pass hasher : {}", mdp_hash);
             }
             _ => println!("pas le droit")
@@ -95,17 +94,16 @@ impl SM {
             _ => println!("opération impossible")
         }
     }
+
+    fn addNewLog(&mut self) -> () {
+        match self.state {
+            Logged => {
+                self.interface.new_password();
+            }
+            _ => println!("opération impossible")
+        }
+    }
+
 }
 
 
-fn users_store(id: &String, mdp: &String) -> std::io::Result<()> {
-    //let mut file = OpenOptions::new().write(true).append(true).open("users.txt").expect("Unable to open file");
-    let extension: String = ".txt".to_owned();
-    let mut id_owned: String = id.to_owned();
-    id_owned.push_str(&extension);
-    println!("Voici le pointeur id : {} ", id_owned);
-    println!("Voici le pointeur ext : {}", &extension);
-    let mut file = File::create(id_owned)?;
-    file.write_all(mdp.as_bytes()).expect("Echec d'écriture");
-    Ok(())
-}

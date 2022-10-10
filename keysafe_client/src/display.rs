@@ -11,7 +11,7 @@ pub trait Interface {
     fn sign_in(&self)-> Result<user, std::io::Error>;
     fn user_connected(&self);
     fn main_menu(&self) -> Result<String, std::io::Error>;
-    fn new_password(&self) -> Result<login, std::io::Error>;
+    fn new_password(&self);
 }
 
 pub struct Terminal_Interface {}
@@ -70,8 +70,15 @@ impl Interface for Terminal_Interface {
         todo!()
     }
 
-    fn new_password(&self) -> Result<login, Error> {
-        todo!()
+    fn new_password(&self) {
+        let mut pseudo = String::new();
+        let mut mdp = String::new();
+        println!("Nouveau mdp");
+        println!("Pseudo :");
+        io::stdin().read_line(&mut pseudo).expect(" ");
+        println!("Mdp :");
+        io::stdin().read_line(&mut mdp).expect(" ");
+
     }
 }
 

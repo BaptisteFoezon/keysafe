@@ -28,11 +28,11 @@ use bouncer::Bouncer;
 mod login;
 mod bouncer;
 mod tcp;
+mod fileManager;
 
 
 fn main() {
-    let interface = display::Terminal_Interface {};
+    let interface = display::Terminal_Interface{};
     let mut st = SM::new(interface);
     st.start();
 }
-
