@@ -34,6 +34,7 @@ impl Interface for Terminal_Interface {
     }
 
     fn create_account(&self) -> Result<user, std::io::Error> {
+
         let mut nom_in = String::new();
         let mut mail = String::new();
         let mut mdp1 = String::new();
@@ -56,6 +57,21 @@ impl Interface for Terminal_Interface {
         let mut mdp = String::new();
         println!("Veuillez vous identifier...");
         println!("Pseudo :");
+        io::stdin().read_line(&mut pseudo).expect(" ");
+        println!("Mdp :");
+        io::stdin().read_line(&mut mdp).expect(" ");
+
+    }
+
+    fn get_choice(&self) {
+        todo!()
+    }
+}
+
+
+impl Interface for GUI_Interface{
+    fn display_menu(&self) {
+        println!("GUI")
         io::stdin().read_line(&mut pseudo);
         println!("Mot de passe :");
         io::stdin.read_line(&mut mdp);
@@ -86,6 +102,10 @@ impl Interface for Terminal_Interface {
         println!("Indiquez votre mot de passe :");
         io::stdin().read_line(&mut pwd)?;
         Ok(login::new(url.trim(), mail.trim(), pwd.trim()))
+    }
+
+    fn get_choice(&self) {
+        todo!()
     }
 }
 
