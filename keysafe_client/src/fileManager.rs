@@ -16,31 +16,33 @@ pub fn getUserCredential(){
 
 
 pub fn users_store(id: String, main_pwd: String) -> std::io::Result<()> {
-    let mut extension: String = ".pwd".to_owned();
-    let mut extension2: String = ".data".to_owned();
-    let mut idToOwned: String = id.to_string();
-    let mut idToOwned2: String = id.to_string();
-    idToOwned.push_str(&extension);
-    idToOwned2.push_str(&extension2);
+    let extension: String = ".pwd".to_owned();
+    let extension2: String = ".data".to_owned();
+    let mut id_to_owned: String = id.to_string();
+    let mut id_to_owned2: String = id.to_string();
+    id_to_owned.push_str(&extension);
+    id_to_owned2.push_str(&extension2);
     println!("Voici le pointeur id : {} ", &id);
     println!("Voici le pointeur ext : {}", &extension);
-    let mut file = File::create(idToOwned)?;
-    let mut file2 = File::create(idToOwned2)?;
+    let mut file = File::create(id_to_owned)?;
+    let mut file2 = File::create(id_to_owned2)?;
     file.write_all(main_pwd.as_bytes()).expect("Echec d'écriture");
     Ok(())
 }
 
 pub fn data_store(user: user, url : &str , pwd: &str) {
-    let mut extension: String = ".data".to_owned();
-    let mut idToOwned: String = user.pseudo;
-    let mut file = OpenOptions::new().append(true).open(idToOwned).unwrap();
+    let extension: String = ".data".to_owned();
+    let mut id_to_owned: String = user.pseudo;
+    id_to_owned.push_str(&extension);
+    let mut file = OpenOptions::new().append(true).open(id_to_owned).unwrap();
     file.write_all(url.as_bytes()).expect("Echec d'écriture");
     file.write_all(pwd.as_bytes()).expect("Echec d'écriture");
 }
 
-pub fn getPwdFromFile(pseudo : &str) -> String{
-    let mut extension: String = ".pwd".to_owned();
-    let mut idToOwned: String = pseudo.to_string();
-    let contents = fs::read_to_string(idToOwned).expect("  ");
+pub fn get_pwd_from_file(pseudo : &str) -> String{
+    let extension: String = ".pwd".to_owned();
+    let mut id_to_owned: String = pseudo.to_string();
+    id_to_owned.push_str(&extension);
+    let contents = fs::read_to_string(id_to_owned).expect("  ");
     return contents;
 }
