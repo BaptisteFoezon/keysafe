@@ -11,7 +11,7 @@ pub trait Interface {
     fn sign_in(&self) -> Result<user, std::io::Error>;
     fn user_connected(&self);
     fn main_menu(&self) -> Result<String, std::io::Error>;
-    fn new_password(&self);
+    fn new_password(&self) -> Result<login, std::io::Error>;
 }
 
 pub struct Terminal_Interface {}
@@ -55,21 +55,29 @@ impl Interface for Terminal_Interface {
         Ok(user::new(pseudo.trim(), mdp.trim()))
     }
 
+    fn main_menu(&self) -> Result<String, std::io::Error> {
+        let mut choice = String::new();;
+        println!("Bravo! Vous êtes désormais connecté");
+        println!("Que désirez-vous faire ?");
+        println!("1. Accéder à mes mots de passe");
+        println!("2. Ajouer un nouveau mot de passe");
+        io::stdin().read_line( &mut choice).expect("");
+        Ok(choice.trim().to_string())
+    }
+
+    fn new_password(&self) -> Result<login, std::io::Error> {
+        let mut login = login {url: "".to_string(),mail: "".to_string(), pwd: "".to_string()};
+        println!("Enregistrement d'un nouveau mot de passe...");
+        println!("URL du site :");
+        io::stdin().read_line( &mut login.url).expect("");
+        println!("Adresse mail ou identifiant :");
+        io::stdin().read_line(&mut login.mail).expect(" ");
+        println!("Mot de passe :");
+        io::stdin().read_line(&mut login.pwd).expect(" ");
+        Ok(login)
+    }
+
     fn user_connected(&self) {
         todo!()
-    }
-
-    fn main_menu(&self) -> Result<String, Error> {
-        todo!()
-    }
-
-    fn new_password(&self) {
-        let mut pseudo = String::new();
-        let mut mdp = String::new();
-        println!("Nouveau mdp");
-        println!("Pseudo :");
-        io::stdin().read_line(&mut pseudo).expect(" ");
-        println!("Mdp :");
-        io::stdin().read_line(&mut mdp).expect(" ");
     }
 }

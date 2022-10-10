@@ -9,6 +9,7 @@ use pwhash::bcrypt;
 
 use crate::bouncer::bouncer;
 use crate::display::Terminal_Interface;
+use crate::fileManager::data_store;
 use crate::state_machine::State::{LogOut, Logged, IDLE};
 use crate::user::{user, User};
 use crate::{Bouncer, Interface};
@@ -44,10 +45,14 @@ impl SM {
         }
     }
 
-    fn logged_menu(&mut self) -> () {
+    fn logged_menu(&mut self, user: user) -> () {
         match self.state {
             Logged => {
-                println!("Salut fred")
+                let choice = self.interface.main_menu().expect("");
+                if choice.eq("2") { 
+                    let login = self.interface.new_password().unwrap();
+                    data_store(user, login);
+                }
             }
             _ => println!("logged_menu :: transition depuis"),
         }
@@ -64,7 +69,7 @@ impl SM {
                 );
                 if sign_result {
                     self.state = Logged;
-                    self.logged_menu();
+                    self.logged_menu(user);
                 } else {
                     println!("mot de passe incorect ")
                 }
