@@ -16,9 +16,7 @@ pub(crate) struct mytcp {
 
 impl myTcp for mytcp {
     fn new(stream: TcpStream) -> mytcp {
-        mytcp {
-            stream
-        }
+        mytcp { stream }
     }
     fn read(&mut self) -> io::Result<()> {
         let mut rx_bytes = [0u8; 10];

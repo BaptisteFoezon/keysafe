@@ -1,14 +1,12 @@
-
 extern crate core;
-
 
 use display::Interface;
 use state_machine::SM;
 
-use crate::state_machine::State::{Logged, LogOut};
+use crate::state_machine::State::{LogOut, Logged};
 
-mod state_machine;
 mod display;
+mod state_machine;
 mod user;
 
 use std::fs;
@@ -24,15 +22,13 @@ use bouncer::Bouncer;
 
 //use login::login;
 
-
-mod login;
 mod bouncer;
-mod tcp;
 mod fileManager;
-
+mod login;
+mod tcp;
 
 fn main() {
-    let interface = display::Terminal_Interface{};
+    let interface = display::Terminal_Interface {};
     let mut st = SM::new(interface);
     st.start();
 }

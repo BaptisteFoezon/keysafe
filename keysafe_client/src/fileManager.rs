@@ -5,15 +5,11 @@ use std::io::Write;
 use crate::login::login;
 use crate::user::{user, User};
 
-pub fn createUser(user : user) -> std::io::Result<()> {
-    users_store( user.pseudo,  user.mdp)
+pub fn createUser(user: user) -> std::io::Result<()> {
+    users_store(user.pseudo, user.mdp)
 }
 
-pub fn getUserCredential(){
-
-}
-
-
+pub fn getUserCredential() {}
 
 pub fn users_store(id: String, main_pwd: String) -> std::io::Result<()> {
     let extension: String = ".pwd".to_owned();
@@ -26,11 +22,12 @@ pub fn users_store(id: String, main_pwd: String) -> std::io::Result<()> {
     println!("Voici le pointeur ext : {}", &extension);
     let mut file = File::create(id_to_owned)?;
     let mut file2 = File::create(id_to_owned2)?;
-    file.write_all(main_pwd.as_bytes()).expect("Echec d'écriture");
+    file.write_all(main_pwd.as_bytes())
+        .expect("Echec d'écriture");
     Ok(())
 }
 
-pub fn data_store(user: user, url : &str , pwd: &str) {
+pub fn data_store(user: user, url: &str, pwd: &str) {
     let extension: String = ".data".to_owned();
     let mut id_to_owned: String = user.pseudo;
     id_to_owned.push_str(&extension);
@@ -39,7 +36,7 @@ pub fn data_store(user: user, url : &str , pwd: &str) {
     file.write_all(pwd.as_bytes()).expect("Echec d'écriture");
 }
 
-pub fn get_pwd_from_file(pseudo : &str) -> String{
+pub fn get_pwd_from_file(pseudo: &str) -> String {
     let extension: String = ".pwd".to_owned();
     let mut id_to_owned: String = pseudo.to_string();
     id_to_owned.push_str(&extension);

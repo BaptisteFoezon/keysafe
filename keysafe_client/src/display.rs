@@ -1,8 +1,8 @@
 use std::io;
 use std::io::Error;
 
-use crate::login::{Login, login};
-use crate::user::{User, user};
+use crate::login::{login, Login};
+use crate::user::{user, User};
 
 pub trait Interface {
     fn display_menu(&self);
@@ -17,7 +17,6 @@ pub trait Interface {
 pub struct Terminal_Interface {}
 
 pub struct GUI_Interface {}
-
 
 impl Interface for Terminal_Interface {
     fn display_menu(&self) {
@@ -74,7 +73,3 @@ impl Interface for Terminal_Interface {
         io::stdin().read_line(&mut mdp).expect(" ");
     }
 }
-
-
-
-
