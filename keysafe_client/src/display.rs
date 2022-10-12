@@ -1,7 +1,6 @@
 use std::io;
 use std::io::Error;
 
-use crate::login::{login, Login};
 use crate::user::{user, User};
 
 pub trait Interface {
@@ -14,13 +13,10 @@ pub trait Interface {
     fn new_password(&self) -> Result<login, std::io::Error>;
 }
 
-pub struct Terminal_Interface {}
+pub struct TerminalInterface {}
 
-pub struct GUI_Interface {}
-
-impl Interface for Terminal_Interface {
+impl Interface for TerminalInterface {
     fn display_menu(&self) {
-        let mut display_menu_choice = String::new();
         println!("Bienvenue dans keysacafe !");
         println!("1. Créer un compte");
         println!("2. Se connecter ");

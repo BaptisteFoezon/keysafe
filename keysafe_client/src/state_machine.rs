@@ -1,34 +1,28 @@
-use std::fs;
-use std::fs::File;
-use std::fs::OpenOptions;
 use std::io;
-use std::io::Write;
-use std::str;
-
 use pwhash::bcrypt;
 
 use crate::bouncer::bouncer;
+use crate::display::TerminalInterface;
 use crate::display::Terminal_Interface;
 use crate::fileManager::data_store;
 use crate::state_machine::State::{LogOut, Logged, IDLE};
-use crate::user::{user, User};
+use crate::user::{User};
 use crate::{Bouncer, Interface};
 
 pub(crate) enum State {
     IDLE,
     LogOut,
-    SignUp,
     Logged,
 }
 
 pub struct SM {
     pub(crate) state: State,
-    interface: Terminal_Interface,
+    interface: TerminalInterface,
 }
 
 impl SM {
     // when StateMachine is created state -> LogOut
-    pub fn new(interface: Terminal_Interface) -> SM {
+    pub fn new(interface: TerminalInterface) -> SM {
         SM {
             state: IDLE,
             interface,
@@ -49,7 +43,7 @@ impl SM {
         match self.state {
             Logged => {
                 let choice = self.interface.main_menu().expect("");
-                if choice.eq("2") { 
+                if choice.eq("2") {
                     let login = self.interface.new_password().unwrap();
                     data_store(user, login);
                 }

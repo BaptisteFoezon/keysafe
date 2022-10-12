@@ -1,4 +1,4 @@
-use crate::fileManager::get_pwd_from_file;
+use crate::file_manager::get_pwd_from_file;
 use pwhash::bcrypt;
 
 pub trait Bouncer {
