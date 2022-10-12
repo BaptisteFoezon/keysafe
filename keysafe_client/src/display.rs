@@ -1,6 +1,6 @@
 use std::io;
-use crate::login::Login;
 
+use crate::login::Login;
 use crate::user::{User, UserTrait};
 
 pub trait Interface {
@@ -9,7 +9,8 @@ pub trait Interface {
     fn create_account(&self) -> Result<User, std::io::Error>;
     fn sign_in(&self) -> Result<User, std::io::Error>;
     fn user_connected(&self);
-    fn main_menu(&self) -> Result<String, std::io::Error>;
+    fn print_main_menu(&self);
+    fn ask_choice(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<Login, std::io::Error>;
 }
 
@@ -55,21 +56,25 @@ impl Interface for TerminalInterface {
         todo!()
     }
 
-    fn main_menu(&self) -> Result<String, std::io::Error> {
-        let mut choice = String::new();
-        println!("Bravo! Vous êtes désormais connecté");
+    fn print_main_menu(&self) {
         println!("Que désirez-vous faire ?");
         println!("1. Accéder à mes mots de passe");
         println!("2. Ajouer un nouveau mot de passe");
-        io::stdin().read_line( &mut choice).expect("");
+    }
+
+
+
+    fn ask_choice(&self) -> Result<String, std::io::Error> {
+        let mut choice = String::new();
+        io::stdin().read_line(&mut choice).expect("");
         Ok(choice.trim().to_string())
     }
 
     fn new_password(&self) -> Result<Login, std::io::Error> {
-        let mut login = Login {url: "".to_string(),mail: "".to_string(), pwd: "".to_string()};
+        let mut login = Login { url: "".to_string(), mail: "".to_string(), pwd: "".to_string() };
         println!("Enregistrement d'un nouveau mot de passe...");
         println!("URL du site :");
-        io::stdin().read_line( &mut login.url).expect("");
+        io::stdin().read_line(&mut login.url).expect("");
         println!("Adresse mail ou identifiant :");
         io::stdin().read_line(&mut login.mail).expect(" ");
         println!("Mot de passe :");
