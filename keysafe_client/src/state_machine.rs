@@ -5,7 +5,7 @@ use pwhash::bcrypt;
 use crate::{BouncerTrait, Interface};
 use crate::bouncer::Bouncer;
 use crate::display::TerminalInterface;
-use crate::file_manager::data_store;
+use crate::file_manager::{FileManager, FileManagerTrait};
 use crate::state_machine::State::{IDLE, Logged, LogOut};
 use crate::user::{User, UserTrait};
 
@@ -45,7 +45,7 @@ impl SM {
                 let choice = self.interface.main_menu().expect("");
                 if choice.eq("2") {
                     let login = self.interface.new_password().unwrap();
-                    data_store(user, login);
+                    FileManager::data_store(user, login);
                 }
             }
             _ => println!("logged_menu :: transition depuis"),

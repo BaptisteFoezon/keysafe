@@ -1,8 +1,8 @@
-use crate::file_manager::users_store;
+use crate::file_manager::{FileManager, FileManagerTrait};
 
 pub trait UserTrait {
     fn new(pseudo: &str, mdp: &str) -> User;
-    fn new_account(&self);
+    fn new_account(&self) -> std::io::Result<()>;
 }
 
 #[derive(Debug)]
@@ -19,9 +19,10 @@ impl UserTrait for User {
         }
     }
 
-    fn new_account(&self) {
+    fn new_account(&self) -> std::io::Result<()> {
         let pseudo = &self.pseudo;
         let  mdp = &self.mdp;
-        users_store(pseudo.to_string(), mdp.to_string()).unwrap();
+        let result = FileManager::users_store(pseudo.to_string(), mdp.to_string())?;
+        Ok(result)
     }
 }

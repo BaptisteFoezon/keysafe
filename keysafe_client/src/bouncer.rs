@@ -1,5 +1,5 @@
-use crate::file_manager::get_pwd_from_file;
 use pwhash::bcrypt;
+use crate::file_manager::{FileManager, FileManagerTrait};
 
 pub trait BouncerTrait {
     fn new() -> Bouncer;
@@ -14,7 +14,7 @@ impl BouncerTrait for Bouncer {
         Bouncer {}
     }
     fn sign_in(&self, pseudo: &str, pwd: &str) -> Result<bool, std::io::Error> {
-        let psw_file = get_pwd_from_file(pseudo);
+        let psw_file = FileManager::get_pwd_from_file(pseudo);
         Ok(bcrypt::verify(pwd, &*psw_file))
     }
 }
