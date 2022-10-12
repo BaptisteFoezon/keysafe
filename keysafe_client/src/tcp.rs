@@ -1,7 +1,6 @@
 use std::io;
 use std::io::{Read, Write};
 use std::net::TcpStream;
-use std::str::from_utf8;
 
 pub(crate) trait myTcp {
     fn new(stream: TcpStream) -> mytcp;

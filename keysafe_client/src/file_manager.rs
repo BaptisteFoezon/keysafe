@@ -2,14 +2,14 @@ use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
 
-use crate::login::login;
-use crate::user::{user, User};
 
-pub fn createUser(user: user) -> std::io::Result<()> {
+use crate::user::{user};
+
+pub fn create_user(user: user) -> std::io::Result<()> {
     users_store(user.pseudo, user.mdp)
 }
 
-pub fn getUserCredential() {}
+pub fn get_user_credential() {}
 
 pub fn users_store(id: String, main_pwd: String) -> std::io::Result<()> {
     let extension: String = ".pwd".to_owned();
@@ -21,7 +21,7 @@ pub fn users_store(id: String, main_pwd: String) -> std::io::Result<()> {
     println!("Voici le pointeur id : {} ", &id);
     println!("Voici le pointeur ext : {}", &extension);
     let mut file = File::create(id_to_owned)?;
-    let mut file2 = File::create(id_to_owned2)?;
+    File::create(id_to_owned2)?;
     file.write_all(main_pwd.as_bytes())
         .expect("Echec d'écriture");
     Ok(())

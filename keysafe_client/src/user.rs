@@ -1,4 +1,4 @@
-use crate::fileManager::users_store;
+use crate::file_manager::users_store;
 
 pub trait User {
     fn new(pseudo: &str, mdp: &str) -> user;
@@ -20,8 +20,8 @@ impl User for user {
     }
 
     fn new_account(&self) {
-        let mut pseudo = &self.pseudo;
-        let mut mdp = &self.mdp;
+        let pseudo = &self.pseudo;
+        let  mdp = &self.mdp;
         users_store(pseudo.to_string(), mdp.to_string()).unwrap();
     }
 }
