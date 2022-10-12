@@ -8,9 +8,9 @@ mod display;
 mod state_machine;
 mod user;
 
-use bouncer::Bouncer;
+use bouncer::BouncerTrait;
 
-//use login::login;
+//use Login::Login;
 
 mod bouncer;
 mod file_manager;

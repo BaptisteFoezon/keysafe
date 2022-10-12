@@ -1,11 +1,13 @@
 use std::io;
+
 use pwhash::bcrypt;
 
-use crate::bouncer::bouncer;
+use crate::{BouncerTrait, Interface};
+use crate::bouncer::Bouncer;
 use crate::display::TerminalInterface;
-use crate::state_machine::State::{LogOut, Logged, IDLE};
-use crate::user::{User};
-use crate::{Bouncer, Interface};
+use crate::file_manager::data_store;
+use crate::state_machine::State::{IDLE, Logged, LogOut};
+use crate::user::{User, UserTrait};
 
 pub(crate) enum State {
     IDLE,
@@ -37,10 +39,14 @@ impl SM {
         }
     }
 
-    fn logged_menu(&mut self) -> () {
+    fn logged_menu(&mut self, user: User) -> () {
         match self.state {
             Logged => {
-                println!("Salut fred")
+                let choice = self.interface.main_menu().expect("");
+                if choice.eq("2") {
+                    let login = self.interface.new_password().unwrap();
+                    data_store(user, login);
+                }
             }
             _ => println!("logged_menu :: transition depuis"),
         }
@@ -50,14 +56,14 @@ impl SM {
         match self.state {
             LogOut => {
                 let user = self.interface.sign_in().expect("TODO: panic message");
-                let bouncer = bouncer::new();
+                let bouncer = Bouncer::new();
                 let sign_result = bouncer.sign_in(&*user.pseudo, &*user.mdp).expect(
                     "TODO: panic \
                 message",
                 );
                 if sign_result {
                     self.state = Logged;
-                    self.logged_menu();
+                    self.logged_menu(user);
                 } else {
                     println!("mot de passe incorect ")
                 }
@@ -119,7 +125,7 @@ impl SM {
     fn add_new_log(&mut self) -> () {
         match self.state {
             Logged => {
-                self.interface.new_password();
+                self.interface.new_password().expect("TODO: panic message");
             }
             _ => println!("opération impossible"),
         }
