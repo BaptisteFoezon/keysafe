@@ -1,13 +1,13 @@
 use std::io;
+
 use pwhash::bcrypt;
 
-use crate::bouncer::bouncer;
+use crate::{BouncerTrait, Interface};
+use crate::bouncer::Bouncer;
 use crate::display::TerminalInterface;
-use crate::display::Terminal_Interface;
-use crate::fileManager::data_store;
-use crate::state_machine::State::{LogOut, Logged, IDLE};
-use crate::user::{User};
-use crate::{Bouncer, Interface};
+use crate::file_manager::data_store;
+use crate::state_machine::State::{IDLE, Logged, LogOut};
+use crate::user::{User, UserTrait};
 
 pub(crate) enum State {
     IDLE,
@@ -39,7 +39,7 @@ impl SM {
         }
     }
 
-    fn logged_menu(&mut self, user: user) -> () {
+    fn logged_menu(&mut self, user: User) -> () {
         match self.state {
             Logged => {
                 let choice = self.interface.main_menu().expect("");
@@ -56,7 +56,7 @@ impl SM {
         match self.state {
             LogOut => {
                 let user = self.interface.sign_in().expect("TODO: panic message");
-                let bouncer = bouncer::new();
+                let bouncer = Bouncer::new();
                 let sign_result = bouncer.sign_in(&*user.pseudo, &*user.mdp).expect(
                     "TODO: panic \
                 message",
@@ -125,7 +125,7 @@ impl SM {
     fn add_new_log(&mut self) -> () {
         match self.state {
             Logged => {
-                self.interface.new_password();
+                self.interface.new_password().expect("TODO: panic message");
             }
             _ => println!("opération impossible"),
         }

@@ -1,11 +1,12 @@
 use std::fs;
 use std::fs::{File, OpenOptions};
 use std::io::Write;
+use crate::login::Login;
 
 
-use crate::user::{user};
+use crate::user::{User};
 
-pub fn create_user(user: user) -> std::io::Result<()> {
+pub fn create_user(user: User) -> std::io::Result<()> {
     users_store(user.pseudo, user.mdp)
 }
 
@@ -27,7 +28,7 @@ pub fn users_store(id: String, main_pwd: String) -> std::io::Result<()> {
     Ok(())
 }
 
-pub fn data_store(user: user, login: login) {
+pub fn data_store(user: User, login: Login) {
     let extension: String = ".data".to_owned();
     let mut id_to_owned: String = user.pseudo;
     id_to_owned.push_str(&extension);

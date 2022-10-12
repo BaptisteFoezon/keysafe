@@ -1,19 +1,19 @@
 use crate::file_manager::users_store;
 
-pub trait User {
-    fn new(pseudo: &str, mdp: &str) -> user;
+pub trait UserTrait {
+    fn new(pseudo: &str, mdp: &str) -> User;
     fn new_account(&self);
 }
 
 #[derive(Debug)]
-pub struct user {
+pub struct User {
     pub pseudo: String,
     pub mdp: String,
 }
 
-impl User for user {
-    fn new(name: &str, mdp: &str) -> user {
-        user {
+impl UserTrait for User {
+    fn new(name: &str, mdp: &str) -> User {
+        User {
             pseudo: name.to_string(),
             mdp: mdp.to_string(),
         }
