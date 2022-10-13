@@ -43,6 +43,9 @@ impl SM {
         match self.state {
             Logged => {
                 let choice = self.interface.main_menu().expect("");
+                if (choice.eq("1")){
+                    FileManager::get_data_from_file();
+                }
                 if choice.eq("2") {
                     let login = self.interface.new_password().unwrap();
                     FileManager::data_store(user, login);
