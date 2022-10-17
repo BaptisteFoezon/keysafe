@@ -9,7 +9,7 @@ pub trait FileManagerTrait {
     fn create_user(user: User) -> io::Result<()>;
     fn get_user_credential();
     fn users_store(id: String, main_pwd: String) -> io::Result<()>;
-    fn data_store(user: User, login: Login);
+    fn data_store(user: User, login: Login) -> std::io::Result<()> ;
     fn get_pwd_from_file(pseudo: &str) -> io::Result<String>;
 }
 
@@ -38,14 +38,15 @@ impl FileManagerTrait for FileManager {
         Ok(())
     }
 
-    fn data_store(user: User, login: Login) {
+    fn data_store(user: User, login: Login) -> std::io::Result<()> {
         let extension: String = ".data".to_owned();
         let mut id_to_owned: String = user.pseudo;
         id_to_owned.push_str(&extension);
-        let mut file = OpenOptions::new().append(true).open(id_to_owned).unwrap();
-        file.write_all(login.url.as_bytes()).expect("Echec d'écriture");
-        file.write_all(login.mail.as_bytes()).expect("Echec d'écriture");
-        file.write_all(login.pwd.as_bytes()).expect("Echec d'écriture");
+        let mut file = OpenOptions::new().append(true).open(id_to_owned)?;
+        file.write_all(login.url.as_bytes())?;
+        file.write_all(login.mail.as_bytes())?;
+        file.write_all(login.pwd.as_bytes())?;
+        Ok(())
     }
 
     fn get_pwd_from_file(pseudo: &str) -> io::Result<String> {

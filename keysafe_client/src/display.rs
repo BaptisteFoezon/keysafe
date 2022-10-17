@@ -7,7 +7,7 @@ pub trait Interface {
     fn display_menu(&self);
     fn display_create_account_success(&self);
     fn create_account(&self) -> Result<User, std::io::Error>;
-    fn sign_in(&self) -> Result<User, std::io::Error>;
+    fn sign_in(&self) -> User;
     fn user_connected(&self);
     fn print_main_menu(&self);
     fn ask_choice(&self) -> Result<String, std::io::Error>;
@@ -41,15 +41,28 @@ impl Interface for TerminalInterface {
         Ok(User::new(nom_in.trim(), mdp1.trim()))
     }
 
-    fn sign_in(&self) -> Result<User, std::io::Error> {
+    fn sign_in(&self) -> User {
         println!("display::TerminalInterface::sign_in");
         let mut pseudo = String::new();
         let mut mdp = String::new();
         println!("Pseudo :");
-        io::stdin().read_line(&mut pseudo).expect(" ");
-        println!("Mdp :");
-        io::stdin().read_line(&mut mdp).expect(" ");
-        Ok(User::new(pseudo.trim(), mdp.trim()))
+        let result = io::stdin().read_line(&mut pseudo);
+        match result {
+            Ok(..) => {
+                if pseudo.trim() == "" {
+                    println!("le pseudo ne peut pas etre vide");
+                    self.sign_in()
+                } else {
+                    println!("Mdp :");
+                    let mdp_result = io::stdin().read_line(&mut mdp);
+                    match mdp_result {
+                        Ok(_) => User::new(pseudo.trim(), mdp.trim()),
+                        Err(_) => self.sign_in(),
+                    }
+                }
+            }
+            Err(_) => self.sign_in(),
+        }
     }
 
     fn user_connected(&self) {
@@ -62,8 +75,6 @@ impl Interface for TerminalInterface {
         println!("2. Ajouer un nouveau mot de passe");
     }
 
-
-
     fn ask_choice(&self) -> Result<String, std::io::Error> {
         let mut choice = String::new();
         io::stdin().read_line(&mut choice).expect("");
@@ -71,14 +82,18 @@ impl Interface for TerminalInterface {
     }
 
     fn new_password(&self) -> Result<Login, std::io::Error> {
-        let mut login = Login { url: "".to_string(), mail: "".to_string(), pwd: "".to_string() };
+        let mut login = Login {
+            url: "".to_string(),
+            mail: "".to_string(),
+            pwd: "".to_string(),
+        };
         println!("Enregistrement d'un nouveau mot de passe...");
         println!("URL du site :");
-        io::stdin().read_line(&mut login.url).expect("");
+        io::stdin().read_line(&mut login.url)?;
         println!("Adresse mail ou identifiant :");
-        io::stdin().read_line(&mut login.mail).expect(" ");
+        io::stdin().read_line(&mut login.mail)?;
         println!("Mot de passe :");
-        io::stdin().read_line(&mut login.pwd).expect(" ");
+        io::stdin().read_line(&mut login.pwd)?;
         Ok(login)
     }
 }

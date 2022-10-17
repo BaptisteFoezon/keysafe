@@ -7,6 +7,7 @@ use crate::{BouncerTrait, Interface};
 use crate::bouncer::Bouncer;
 use crate::display::TerminalInterface;
 use crate::file_manager::{FileManager, FileManagerTrait};
+use crate::login::Login;
 use crate::state_machine::State::{IDLE, Logged, LogOut};
 use crate::user::{User, UserTrait};
 
@@ -51,7 +52,7 @@ impl SM {
                             self.see_password(user);
                         }
                         else if value.eq("2") {
-                            self.add_password(user);
+                            self.add_new_log(user);
                         }
                         else {
                             self.logged_menu(user);
@@ -70,7 +71,7 @@ impl SM {
     fn ask_sign_in(&mut self) -> () {
         match self.state {
             LogOut => {
-                let user = self.interface.sign_in().expect("TODO: panic message");
+                let user = self.interface.sign_in();
                 let bouncer = Bouncer::new();
                 let sign_result = bouncer.sign_in(&*user.pseudo, &*user.mdp);
                 match sign_result {
@@ -110,16 +111,6 @@ impl SM {
     }
 
 
-    fn add_password(&mut self, user: User) -> () {
-        match self.state {
-            Logged => {
-                println!("vous avez demander à ajouter un mot de passe");
-                let login = self.interface.new_password().unwrap();
-                FileManager::data_store(user, login);
-            }
-            _ => println!("vous netes pas connecté")
-        }
-    }
     fn ask_sign_up(&mut self) -> () {
         match self.state {
             LogOut => {
@@ -172,8 +163,14 @@ impl SM {
             LogOut => {
                 let mut choice = String::new();
                 self.interface.display_menu();
-                io::stdin().read_line(&mut choice).expect("mauvaise saisie");
-                println!("dqdqsd");
+                let result = io::stdin().read_line(&mut choice);
+                match result {
+                    Ok(_) => {}
+                    Err(_) => {
+                        println!("une erreur est survenue");
+                        self.print_menu();
+                    }
+                }
                 if choice.trim().eq("1") {
                     println!("print_menu :: vous avez demander à sign up ");
                     self.ask_sign_up();
@@ -187,10 +184,27 @@ impl SM {
         }
     }
 
-    fn add_new_log(&mut self) -> () {
+    fn add_new_log(&mut self, user : User) -> () {
         match self.state {
             Logged => {
-                self.interface.new_password().expect("TODO: panic message");
+                let result = self.interface.new_password();
+                match result{
+                    Ok(login) => {
+                        let result = FileManager::data_store(user, login);
+                        match result {
+                            Ok(_) => {
+                                println!("mdp enregistrer avec succes")
+                            }
+                            Err(_) => {
+                                println!("Une erreur est survenue veuillez réesayer");
+                            }
+                        }
+                    }
+                    Err(_) => {
+                        println!("Une erreur est survenue merci de réesayer");
+                        self.add_new_log(user)
+                    }
+                }
             }
             _ => println!("opération impossible"),
         }
