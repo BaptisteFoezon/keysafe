@@ -16,8 +16,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build client
-      run: cargo build keysafe_client/ --verbose
     - name: Build Serveur
       run: cargo build keysafe_serveur/ --verbose
     - name: Run tests
