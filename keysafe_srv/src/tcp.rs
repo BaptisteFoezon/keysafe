@@ -2,19 +2,18 @@ use std::io;
 use std::io::{Read, Write};
 use std::net::TcpStream;
 
-pub(crate) trait MyTcpTrait {
+pub trait MyTcpTrait {
     fn new(stream: TcpStream) -> MyTcp;
     fn read(&mut self) -> io::Result<()>;
-    fn write(&mut self, message: &str) -> io::Result<()>;
+    fn send(&mut self, message: &str) -> io::Result<()>;
 }
 
-#[derive(Debug)]
-pub(crate) struct MyTcp {
-    pub(crate) stream: TcpStream,
+pub struct MyTcp {
+    stream: TcpStream,
 }
 
 impl MyTcpTrait for MyTcp {
-    fn new(stream: TcpStream) -> MyTcp {
+    fn new(&stream: TcpStream) -> MyTcp {
         MyTcp { stream }
     }
     fn read(&mut self) -> io::Result<()> {
@@ -27,7 +26,7 @@ impl MyTcpTrait for MyTcp {
         Ok(())
     }
 
-    fn write(&mut self, message: &str) -> io::Result<()> {
+    fn send(&mut self, message: &str) -> io::Result<()> {
         self.stream.write(message.as_bytes()).unwrap();
         Ok(())
     }
