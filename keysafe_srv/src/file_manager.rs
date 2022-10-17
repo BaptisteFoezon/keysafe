@@ -5,12 +5,23 @@ use std::{fs, io};
 use crate::login::Login;
 use crate::user::User;
 
+#[derive(Deserialize, Serialize, Debug)]
+struct Data {
+    url : String,
+    id : String,
+    password : String
+}
+// struct ListLogin {
+//     list: Vec<Data>,
+// }
+
 pub trait FileManagerTrait {
     fn create_user(user: User) -> io::Result<()>;
     fn get_user_credential();
     fn users_store(id: String, main_pwd: String) -> io::Result<()>;
     fn data_store(user: User, login: Login) -> std::io::Result<()>;
     fn get_pwd_from_file(pseudo: &str) -> io::Result<String>;
+    fn get_data_from_file() -> Login;
 }
 
 pub struct FileManager {}
@@ -61,4 +72,14 @@ impl FileManagerTrait for FileManager {
         let result = fs::read_to_string(id_to_owned)?;
         Ok(result)
     }
+
+    fn get_data_from_file() -> Login 
+    {
+            let file_content = fs::read_to_string("test.json").expect("Echec ouverture fichier");
+            let data: Data = serde_json::from_str(&file_content).expect("JSON was not well-formatted");
+            //let listLogin[0]: ListLogin = serde_json::from_str(&file_content).expect("JSON was not well-formatted");
+            println!("{:?}", data);
+            return Login { url: "test".to_string(), mail: "test".to_string(), pwd: "test".to_string() }
+    
+        }
 }
