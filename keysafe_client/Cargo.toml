@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 pwhash = "1"
+machine = "0.3.0"
