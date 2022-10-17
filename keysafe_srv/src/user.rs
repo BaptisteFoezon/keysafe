@@ -21,7 +21,7 @@ impl UserTrait for User {
 
     fn new_account(&self) -> std::io::Result<()> {
         let pseudo = &self.pseudo;
-        let  mdp = &self.mdp;
+        let mdp = &self.mdp;
         let result = FileManager::users_store(pseudo.to_string(), mdp.to_string())?;
         Ok(result)
     }
