@@ -1,5 +1,5 @@
-use pwhash::bcrypt;
 use crate::file_manager::{FileManager, FileManagerTrait};
+use pwhash::bcrypt;
 
 pub trait BouncerTrait {
     fn new() -> Bouncer;

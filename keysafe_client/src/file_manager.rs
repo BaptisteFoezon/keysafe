@@ -1,6 +1,6 @@
-use std::{fs, io};
 use std::fs::{File, OpenOptions};
-use std::io::{Write};
+use std::io::Write;
+use std::{fs, io};
 
 use crate::login::Login;
 use crate::user::User;
@@ -9,12 +9,11 @@ pub trait FileManagerTrait {
     fn create_user(user: User) -> io::Result<()>;
     fn get_user_credential();
     fn users_store(id: String, main_pwd: String) -> io::Result<()>;
-    fn data_store(user: User, login: Login) -> std::io::Result<()> ;
+    fn data_store(user: User, login: Login) -> std::io::Result<()>;
     fn get_pwd_from_file(pseudo: &str) -> io::Result<String>;
 }
 
 pub struct FileManager {}
-
 
 impl FileManagerTrait for FileManager {
     fn create_user(user: User) -> std::io::Result<()> {
@@ -32,8 +31,14 @@ impl FileManagerTrait for FileManager {
         id_to_owned2.push_str(&extension2);
         dbg!("Voici le pointeur id : {} ", &id);
         dbg!("Voici le pointeur ext : {}", &extension);
-        let mut file = OpenOptions::new().write(true).create_new(true).open(id_to_owned)?;
-        OpenOptions::new().write(true).create_new(true).open(id_to_owned2)?;
+        let mut file = OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(id_to_owned)?;
+        OpenOptions::new()
+            .write(true)
+            .create_new(true)
+            .open(id_to_owned2)?;
         file.write_all(main_pwd.as_bytes())?;
         Ok(())
     }
@@ -57,5 +62,3 @@ impl FileManagerTrait for FileManager {
         Ok(result)
     }
 }
-
-

@@ -3,13 +3,13 @@ use std::io::{Error, ErrorKind};
 
 use pwhash::bcrypt;
 
-use crate::{BouncerTrait, Interface};
 use crate::bouncer::Bouncer;
 use crate::display::TerminalInterface;
 use crate::file_manager::{FileManager, FileManagerTrait};
-use crate::login::Login;
-use crate::state_machine::State::{IDLE, Logged, LogOut};
+
+use crate::state_machine::State::{LogOut, Logged, IDLE};
 use crate::user::{User, UserTrait};
+use crate::{BouncerTrait, Interface};
 
 pub(crate) enum State {
     IDLE,
@@ -48,13 +48,11 @@ impl SM {
                 let choice = self.interface.ask_choice();
                 match choice {
                     Ok(value) => {
-                        if value.eq("1"){
+                        if value.eq("1") {
                             self.see_password(user);
-                        }
-                        else if value.eq("2") {
+                        } else if value.eq("2") {
                             self.add_new_log(user);
-                        }
-                        else {
+                        } else {
                             self.logged_menu(user);
                         }
                     }
@@ -64,7 +62,7 @@ impl SM {
                     }
                 }
             }
-            _ => println!("logged_menu :: transition depuis"),
+            _ => println!("logged_menu :: transition impossible"),
         }
     }
 
@@ -86,8 +84,10 @@ impl SM {
                     }
                     Err(error) => match error.kind() {
                         ErrorKind::NotFound => {
-                            println!("Aucun utilisateur de ce nom existe, veuillez créer un \
-                            compte ");
+                            println!(
+                                "Aucun utilisateur de ce nom existe, veuillez créer un \
+                            compte "
+                            );
                             self.print_menu();
                         }
                         _ => {
@@ -106,10 +106,9 @@ impl SM {
                 println!("vous avez demander à voir vos mots de passe");
                 println!("{}", user.pseudo)
             }
-            _ => println!("vous netes pas connecté")
+            _ => println!("vous netes pas connecté"),
         }
     }
-
 
     fn ask_sign_up(&mut self) -> () {
         match self.state {
@@ -120,6 +119,7 @@ impl SM {
                     .create_account()
                     .expect("TODO: panic message");
                 dbg!("{}", &user);
+                // TODO : gestion erreur
                 user.mdp = bcrypt::hash(user.mdp).unwrap();
                 let result = user.new_account();
                 match result {
@@ -130,15 +130,17 @@ impl SM {
                     }
                     Err(error) => match error.kind() {
                         ErrorKind::AlreadyExists => {
-                            println!("Un utilisateur du meme nom existe veuillez changer de \
-                            pseudo");
+                            println!(
+                                "Un utilisateur du meme nom existe veuillez changer de \
+                            pseudo"
+                            );
                             self.ask_sign_up();
                         }
                         _ => {
                             dbg!("{}", error.to_string());
                             panic!("Une erreur est survenue")
                         }
-                    }
+                    },
                 }
             }
             _ => println!("pas le droit"),
@@ -184,11 +186,11 @@ impl SM {
         }
     }
 
-    fn add_new_log(&mut self, user : User) -> () {
+    fn add_new_log(&mut self, user: User) -> () {
         match self.state {
             Logged => {
                 let result = self.interface.new_password();
-                match result{
+                match result {
                     Ok(login) => {
                         let result = FileManager::data_store(user, login);
                         match result {

@@ -3,7 +3,6 @@ extern crate core;
 use display::Interface;
 use state_machine::SM;
 
-
 mod display;
 mod state_machine;
 mod user;
