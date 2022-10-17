@@ -1,6 +1,13 @@
+{
+    "login": {
+        "url": "www.google.com",
+        "id": "xaviercunego@yahoo.fr",
+        "password": "aa"
+    },
 
-        {
-            "url": "www.google.com",
-            "id": "xaviercunego@yahoo.fr",
-            "password": "aa"
-        }
+    "login2": {
+        "url": "www.favebook.com",
+        "id": "crozitartifoez",
+        "password": "bb"
+    }
+}

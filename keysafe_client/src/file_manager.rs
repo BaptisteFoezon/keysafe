@@ -8,13 +8,16 @@ use crate::user::User;
 use serde_derive::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Debug)]
-
-
 struct Data {
     url : String,
     id : String,
     password : String
 }
+// struct ListLogin {
+//     list: Vec<Data>,
+// }
+
+
 
 pub trait FileManagerTrait {
     fn create_user(user: User) -> std::io::Result<()>;
@@ -75,6 +78,7 @@ impl FileManagerTrait for FileManager {
 {
         let file_content = fs::read_to_string("test.json").expect("Echec ouverture fichier");
         let data: Data = serde_json::from_str(&file_content).expect("JSON was not well-formatted");
+        //let listLogin[0]: ListLogin = serde_json::from_str(&file_content).expect("JSON was not well-formatted");
         println!("{:?}", data);
         return Login { url: "test".to_string(), mail: "test".to_string(), pwd: "test".to_string() }
 
