@@ -49,7 +49,7 @@ impl SM {
                 match choice {
                     Ok(value) => {
                         if value.eq("1") {
-                            self.see_password(user);
+                            self.see_passwords(user);
                         } else if value.eq("2") {
                             self.add_new_log(user);
                         } else {
@@ -100,11 +100,11 @@ impl SM {
         }
     }
 
-    fn see_password(&mut self, user: User) -> () {
+    fn see_passwords(&mut self, user: User) -> () {
         match self.state {
             Logged => {
-                println!("vous avez demander à voir vos mots de passe");
-                println!("{}", user.pseudo)
+                let list_logins = FileManager::get_data_from_file();
+                println!("{:?}", list_logins);
             }
             _ => println!("vous netes pas connecté"),
         }

@@ -2,18 +2,21 @@ use std::fs::{File, OpenOptions};
 use std::io::Write;
 use std::{fs, io};
 
+use serde_derive::{Deserialize, Serialize};
+
 use crate::login::Login;
 use crate::user::User;
 
 #[derive(Deserialize, Serialize, Debug)]
-struct Data {
+struct LoginJSON {
     url : String,
     id : String,
     password : String
 }
-// struct ListLogin {
-//     list: Vec<Data>,
-// }
+#[derive(Deserialize, Serialize, Debug)]
+pub struct ListLogin {
+     list: Vec<LoginJSON>,
+ }
 
 pub trait FileManagerTrait {
     fn create_user(user: User) -> io::Result<()>;
@@ -21,7 +24,7 @@ pub trait FileManagerTrait {
     fn users_store(id: String, main_pwd: String) -> io::Result<()>;
     fn data_store(user: User, login: Login) -> std::io::Result<()>;
     fn get_pwd_from_file(pseudo: &str) -> io::Result<String>;
-    fn get_data_from_file() -> Login;
+    fn get_data_from_file() -> ListLogin;
 }
 
 pub struct FileManager {}
@@ -59,9 +62,13 @@ impl FileManagerTrait for FileManager {
         let mut id_to_owned: String = user.pseudo;
         id_to_owned.push_str(&extension);
         let mut file = OpenOptions::new().append(true).open(id_to_owned)?;
-        file.write_all(login.url.as_bytes())?;
-        file.write_all(login.mail.as_bytes())?;
-        file.write_all(login.pwd.as_bytes())?;
+        // file.write_all(login.url.as_bytes())?;
+        // file.write_all(login.mail.as_bytes())?;
+        // file.write_all(login.pwd.as_bytes())?;
+        let login_json = LoginJSON{url: login.url, id: login.mail, password: login.pwd};
+        let j = serde_json::to_string(&login_json)?;
+        //println!("{}", j);
+        file.write_all("{}{}", ",", j.as_bytes())?;
         Ok(())
     }
 
@@ -73,13 +80,11 @@ impl FileManagerTrait for FileManager {
         Ok(result)
     }
 
-    fn get_data_from_file() -> Login 
+    fn get_data_from_file() -> ListLogin 
     {
             let file_content = fs::read_to_string("test.json").expect("Echec ouverture fichier");
-            let data: Data = serde_json::from_str(&file_content).expect("JSON was not well-formatted");
-            //let listLogin[0]: ListLogin = serde_json::from_str(&file_content).expect("JSON was not well-formatted");
-            println!("{:?}", data);
-            return Login { url: "test".to_string(), mail: "test".to_string(), pwd: "test".to_string() }
+            let list_logs: ListLogin = serde_json::from_str(&file_content).unwrap();
+            return list_logs;
     
         }
 }
