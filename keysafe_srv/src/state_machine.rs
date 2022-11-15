@@ -45,7 +45,7 @@ impl SM {
         match self.state {
             Logged => {
                 self.interface.print_main_menu();
-                let choice = self.interface.ask_choice();
+                let choice = self.interface.ask_choice();   
                 match choice {
                     Ok(value) => {
                         if value.eq("1") {

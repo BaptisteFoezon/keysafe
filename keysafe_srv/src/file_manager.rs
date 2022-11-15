@@ -67,8 +67,10 @@ impl FileManagerTrait for FileManager {
         // file.write_all(login.pwd.as_bytes())?;
         let login_json = LoginJSON{url: login.url, id: login.mail, password: login.pwd};
         let j = serde_json::to_string(&login_json)?;
-        //println!("{}", j);
-        file.write_all("{}{}", ",", j.as_bytes())?;
+        println!("On est rentré dans datastore");
+        println!("j= {}", j);
+        file.write_all(j.as_bytes())?; 
+
         Ok(())
     }
 
