@@ -42,10 +42,10 @@ impl FileManagerTrait for FileManager {
         let extension2: String = ".data".to_owned();
         let mut id_to_owned: String = id.to_string();
         let mut id_to_owned2: String = id.to_string();
-        id_to_owned.push_str(&extension);
-        id_to_owned2.push_str(&extension2);
-        dbg!("Voici le pointeur id : {} ", &id);
-        dbg!("Voici le pointeur ext : {}", &extension);
+        id_to_owned.push_str(&extension); 
+        id_to_owned2.push_str(&extension2); 
+        dbg!("Voici le pointeur id : {} ", &id); 
+        dbg!("Voici le pointeur ext : {}", &extension); 
         let mut file = OpenOptions::new()
             .write(true)
             .create_new(true)
@@ -63,8 +63,8 @@ impl FileManagerTrait for FileManager {
         let mut id_to_owned: String = user.pseudo;
         id_to_owned.push_str(&extension);
         let mut file = OpenOptions::new().append(true).open(id_to_owned)?;
-        //let login_json = LoginJSON{url: login.url, id: login.mail, password: login.pwd};
-        let list_login = ListLogin{url: login.url, id: login.mail, password: login.pwd};
+        let login_json = LoginJSON{url: login.url, id: login.mail, password: login.pwd};
+        let list_login = ListLogin{data: vec![login_json]};
         let j = serde_json::to_string(&list_login)?;
         //println!("j= {}", j);
         file.write_all(j.as_bytes())?; 
@@ -82,7 +82,7 @@ impl FileManagerTrait for FileManager {
 
     fn get_data_from_file() -> io::Result<ListLogin> 
     {
-            let file_content = fs::read_to_string("xav.data").expect("Echec ouverture fichier");
+            let file_content = fs::read_to_string("xavv.data").expect("Echec ouverture fichier");
             let list_logs: ListLogin = serde_json::from_str(&file_content)?;
             //println!("Voici la liste des mdp : {:?}", list_logs);
             //return list_logs;  

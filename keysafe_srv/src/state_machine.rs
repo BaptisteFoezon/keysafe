@@ -104,7 +104,7 @@ impl SM {
         match self.state {
             Logged => {
                 let list_logins = FileManager::get_data_from_file();
-                println!("{:?}", list_logins);
+                println!("{:?}", list_logins); 
             }
             _ => println!("vous netes pas connecté"),
         }

@@ -89,11 +89,17 @@ impl Interface for TerminalInterface {
         };
         println!("Enregistrement d'un nouveau mot de passe...");
         println!("URL du site :");
-        io::stdin().read_line(&mut login.url)?;
+        let mut url = String::new();
+        let mut mail = String::new();
+        let mut pwd = String::new();
+        io::stdin().read_line(&mut url)?;
+        login.url = url.trim().to_string();
         println!("Adresse mail ou identifiant :");
-        io::stdin().read_line(&mut login.mail)?;
+        io::stdin().read_line(&mut mail)?;
+        login.mail = mail.trim().to_string();
         println!("Mot de passe :");
-        io::stdin().read_line(&mut login.pwd)?;
+        io::stdin().read_line(&mut pwd)?;
+        login.pwd = pwd.trim().to_string();
         Ok(login)
     }
 }
