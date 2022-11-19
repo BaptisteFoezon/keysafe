@@ -103,7 +103,8 @@ impl SM {
     fn see_passwords(&mut self, user: User) -> () {
         match self.state {
             Logged => {
-                let list_logins = FileManager::get_data_from_file();
+                let mut pseudo = user.pseudo;
+                let list_logins = FileManager::get_data_from_file(&pseudo);
                 println!("{:?}", list_logins); 
             }
             _ => println!("vous netes pas connecté"),

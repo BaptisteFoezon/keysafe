@@ -12,6 +12,7 @@ pub trait Interface {
     fn print_main_menu(&self);
     fn ask_choice(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<Login, std::io::Error>;
+    fn display_all_pwd(&self);
 }
 
 pub struct TerminalInterface {}
@@ -101,5 +102,10 @@ impl Interface for TerminalInterface {
         io::stdin().read_line(&mut pwd)?;
         login.pwd = pwd.trim().to_string();
         Ok(login)
+    }
+
+    fn display_all_pwd(list_login){
+        println!("Voici vos mots de passe enregistrés");
+
     }
 }

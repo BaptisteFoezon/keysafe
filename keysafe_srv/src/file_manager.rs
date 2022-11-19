@@ -25,7 +25,7 @@ pub trait FileManagerTrait {
     fn users_store(id: String, main_pwd: String) -> io::Result<()>;
     fn data_store(user: User, login: Login) -> std::io::Result<()>;
     fn get_pwd_from_file(pseudo: &str) -> io::Result<String>;
-    fn get_data_from_file() -> io::Result<ListLogin>;
+    fn get_data_from_file(pseudo: &str) -> io::Result<ListLogin>;
 }
 
 pub struct FileManager {}
@@ -66,7 +66,6 @@ impl FileManagerTrait for FileManager {
         let login_json = LoginJSON{url: login.url, id: login.mail, password: login.pwd};
         let list_login = ListLogin{data: vec![login_json]};
         let j = serde_json::to_string(&list_login)?;
-        //println!("j= {}", j);
         file.write_all(j.as_bytes())?; 
 
         Ok(())
@@ -80,12 +79,13 @@ impl FileManagerTrait for FileManager {
         Ok(result)
     }
 
-    fn get_data_from_file() -> io::Result<ListLogin> 
-    {
-            let file_content = fs::read_to_string("xavv.data").expect("Echec ouverture fichier");
-            let list_logs: ListLogin = serde_json::from_str(&file_content)?;
-            //println!("Voici la liste des mdp : {:?}", list_logs);
-            //return list_logs;  
+    fn get_data_from_file(pseudo: &str) -> io::Result<ListLogin> 
+    {       
+            let extension: String = ".data".to_owned();
+            let mut id_to_owned: String = pseudo.to_string();
+            id_to_owned.push_str(&extension);
+            let file_content = fs::read_to_string(id_to_owned).expect("Echec d'ouverture du fichier");
+            let list_logs: ListLogin = serde_json::from_str(&file_content)?;  
             Ok(list_logs)  
         }
 }
