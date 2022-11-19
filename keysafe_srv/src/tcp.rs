@@ -13,7 +13,7 @@ pub struct MyTcp {
 }
 
 impl MyTcpTrait for MyTcp {
-    fn new(&stream: TcpStream) -> MyTcp {
+    fn new(stream: TcpStream) -> MyTcp {
         MyTcp { stream }
     }
     fn read(&mut self) -> io::Result<()> {

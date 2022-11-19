@@ -10,9 +10,9 @@ fn main() {
         Ok(mut stream) => {
             println!("Successfully connected to server in port 3333");
             loop {
-                send(&stream, "hello");
+                println!("dsqqs");
                 let answer = receive(&stream);
-                println!("{}", answer);
+                println!("Answer : {}", answer);
                 if answer.eq("menu") {
                     println!("j'affiche le menu")
                 }
@@ -35,10 +35,11 @@ fn send(mut stream: &TcpStream, message: &str) {
 fn receive(mut stream: &TcpStream) -> &str {
     let mut c = "";
     let mut data = [0 as u8; 6]; // using 6 byte buffer
+    println!("receive some data ...");
     match stream.read_exact(&mut data) {
         Ok(_) => {
-             let c = from_utf8(&data).unwrap();
-            println!("{}", c)
+            let c = from_utf8(&data).unwrap();
+            println!("main::receive : {}", c)
         }
         Err(e) => {
             println!("Failed to receive data: {}", e);

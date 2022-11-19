@@ -1,15 +1,12 @@
-use std::io;
-use std::io::{Error, ErrorKind};
-
 use pwhash::bcrypt;
+use std::io;
+use std::io::ErrorKind;
 
-use crate::bouncer::Bouncer;
-use crate::display::TerminalInterface;
+use crate::bouncer::{Bouncer, BouncerTrait};
+use crate::display::{TcpInterface, TcpInterfaceTrait};
 use crate::file_manager::{FileManager, FileManagerTrait};
-
-use crate::state_machine::State::{LogOut, Logged, IDLE};
+use crate::state_machine::State::{IDLE, Logged, LogOut};
 use crate::user::{User, UserTrait};
-use crate::{BouncerTrait, Interface};
 
 pub(crate) enum State {
     IDLE,
@@ -17,21 +14,33 @@ pub(crate) enum State {
     Logged,
 }
 
-pub struct SM {
-    pub(crate) state: State,
-    interface: TerminalInterface,
+pub trait StateMachineTrait {
+    fn new(tcp: TcpInterface) -> SM;
+    fn start(&mut self);
+    fn logout(&mut self);
+    fn logged_menu(&mut self, user: User);
+    fn print_menu(&mut self);
+    fn ask_sign_in(&mut self);
+    fn ask_sign_up(&mut self);
+    fn see_password(&mut self, user: User);
+    fn add_new_log(&mut self, user: User);
 }
 
-impl SM {
+pub struct SM {
+    pub(crate) state: State,
+    pub interface: TcpInterface,
+}
+
+impl StateMachineTrait for SM {
     // when StateMachine is created state -> LogOut
-    pub fn new(interface: TerminalInterface) -> SM {
+    fn new(interface: TcpInterface) -> SM {
         SM {
             state: IDLE,
             interface,
         }
     }
 
-    pub fn start(&mut self) {
+    fn start(&mut self) {
         match self.state {
             IDLE => {
                 self.state = LogOut;
@@ -119,7 +128,6 @@ impl SM {
                     .create_account()
                     .expect("TODO: panic message");
                 dbg!("{}", &user);
-                // TODO : gestion erreur
                 user.mdp = bcrypt::hash(user.mdp).unwrap();
                 let result = user.new_account();
                 match result {
@@ -163,6 +171,7 @@ impl SM {
     fn print_menu(&mut self) -> () {
         match self.state {
             LogOut => {
+                println!("print_menu from LogOut state");
                 let mut choice = String::new();
                 self.interface.display_menu();
                 let result = io::stdin().read_line(&mut choice);

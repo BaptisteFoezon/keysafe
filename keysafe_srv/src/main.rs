@@ -1,34 +1,27 @@
 extern crate core;
 
-use bouncer::BouncerTrait;
-use display::Interface;
+use display::TcpInterfaceTrait;
 use state_machine::SM;
-use std::io::{Read, Write};
-use std::net::{Shutdown, TcpListener, TcpStream};
+use state_machine::StateMachineTrait;
+use std::net::{TcpListener, TcpStream};
 use std::thread;
 use tcp::{MyTcp, MyTcpTrait};
 
-mod display;
 mod state_machine;
-mod user;
-
-//use Login::Login;
-
+mod display;
 mod bouncer;
-mod file_manager;
 mod login;
 mod tcp;
-
+mod file_manager;
+mod user;
+mod config;
 
 fn handle_client(mut stream: TcpStream) {
-    let myTcp = MyTcp::new(&stream);
-    let interface = display::TcpInterface {
-        myTcp
-    };
+    let myTcp = MyTcp::new(stream);
+    let interface = display::TcpInterface::new(myTcp);
     let mut st = SM::new(interface);
     st.start();
 }
-
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:3333").unwrap();
@@ -53,10 +46,4 @@ fn main() {
     // close the socket server
     drop(listener);
 }
-/*
-fn main() {
-    let interface = display::TerminalInterface {};
-    let mut st = SM::new(interface);
-    st.start();
-}
-*/
+
