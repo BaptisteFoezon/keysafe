@@ -2,6 +2,7 @@ use std::io;
 
 use crate::login::Login;
 use crate::user::{User, UserTrait};
+use crate::file_manager::{ListLogin, JsonTrait, Json};
 
 pub trait Interface {
     fn display_menu(&self);
@@ -12,6 +13,7 @@ pub trait Interface {
     fn print_main_menu(&self);
     fn ask_choice(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<Login, std::io::Error>;
+    fn display_all_pwd(&self, list_mdp: ListLogin);
 }
 
 pub struct TerminalInterface {}
@@ -89,11 +91,23 @@ impl Interface for TerminalInterface {
         };
         println!("Enregistrement d'un nouveau mot de passe...");
         println!("URL du site :");
-        io::stdin().read_line(&mut login.url)?;
+        let mut url = String::new();
+        let mut mail = String::new();
+        let mut pwd = String::new();
+        io::stdin().read_line(&mut url)?;
+        login.url = url.trim().to_string();
         println!("Adresse mail ou identifiant :");
-        io::stdin().read_line(&mut login.mail)?;
+        io::stdin().read_line(&mut mail)?;
+        login.mail = mail.trim().to_string();
         println!("Mot de passe :");
-        io::stdin().read_line(&mut login.pwd)?;
+        io::stdin().read_line(&mut pwd)?;
+        login.pwd = pwd.trim().to_string();
         Ok(login)
+    }
+
+    fn display_all_pwd(&self, list_mdp: ListLogin){
+        println!("Voici vos mots de passe enregistrés :");
+        let mut list_all_logins: String = Json::readListLogin(list_mdp);
+        println!("{}", list_all_logins);
     }
 }

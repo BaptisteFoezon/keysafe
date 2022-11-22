@@ -5,7 +5,7 @@ use pwhash::bcrypt;
 
 use crate::bouncer::Bouncer;
 use crate::display::TerminalInterface;
-use crate::file_manager::{FileManager, FileManagerTrait};
+use crate::file_manager::{FileManager, FileManagerTrait, ListLogin};
 
 use crate::state_machine::State::{LogOut, Logged, IDLE};
 use crate::user::{User, UserTrait};
@@ -45,11 +45,11 @@ impl SM {
         match self.state {
             Logged => {
                 self.interface.print_main_menu();
-                let choice = self.interface.ask_choice();
+                let choice = self.interface.ask_choice();   
                 match choice {
                     Ok(value) => {
                         if value.eq("1") {
-                            self.see_password(user);
+                            self.see_passwords(user);
                         } else if value.eq("2") {
                             self.add_new_log(user);
                         } else {
@@ -100,11 +100,12 @@ impl SM {
         }
     }
 
-    fn see_password(&mut self, user: User) -> () {
+    fn see_passwords(&mut self, user: User) -> () {
         match self.state {
             Logged => {
-                println!("vous avez demander à voir vos mots de passe");
-                println!("{}", user.pseudo)
+                let mut pseudo = user.pseudo;
+                let list_logins: ListLogin = FileManager::get_data_from_file(&pseudo);
+                self.interface.display_all_pwd(list_logins);
             }
             _ => println!("vous netes pas connecté"),
         }
