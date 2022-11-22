@@ -2,6 +2,7 @@ use std::io;
 
 use crate::login::Login;
 use crate::user::{User, UserTrait};
+use crate::file_manager::{ListLogin, JsonTrait, Json};
 
 pub trait Interface {
     fn display_menu(&self);
@@ -12,7 +13,7 @@ pub trait Interface {
     fn print_main_menu(&self);
     fn ask_choice(&self) -> Result<String, std::io::Error>;
     fn new_password(&self) -> Result<Login, std::io::Error>;
-    fn display_all_pwd(&self);
+    fn display_all_pwd(&self, list_mdp: ListLogin);
 }
 
 pub struct TerminalInterface {}
@@ -104,8 +105,9 @@ impl Interface for TerminalInterface {
         Ok(login)
     }
 
-    fn display_all_pwd(list_login){
-        println!("Voici vos mots de passe enregistrés");
-
+    fn display_all_pwd(&self, list_mdp: ListLogin){
+        println!("Voici vos mots de passe enregistrés :");
+        let mut list_all_logins: String = Json::readListLogin(list_mdp);
+        println!("{}", list_all_logins);
     }
 }
