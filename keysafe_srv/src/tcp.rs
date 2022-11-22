@@ -40,10 +40,12 @@ impl MyTcpTrait for MyTcp {
     }
 
     fn send(&mut self, message: String) {
-        let message_t = format!("{}{}", message, "\n");
-        println!("send :  {} \n###########", message_t);
-        let mut buf = BytesMut::with_capacity(200);
-        buf.put(message_t.as_bytes());
-        self.stream.write(&buf).expect("tcp send failed");
+        println!("send message > {}", message);
+        let bytes_written = self.stream.write(message.as_bytes()).expect("tcp send failed");
+        println!("Sent bytes > {} ", bytes_written);
+        if bytes_written < message.len() {
+            println!("Sent {}/{} bytes", bytes_written, message.len());
+        }
+        self.stream.flush().expect("tcp flush failed");
     }
 }

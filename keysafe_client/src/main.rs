@@ -33,17 +33,10 @@ fn send(mut stream: &TcpStream, message: &str) {
 }
 
 fn receive(mut stream: &TcpStream) -> String {
-    //let mut data = [0u8; 200]; // using 200 byte buffer
-    let mut buf = BytesMut::with_capacity(200);
-    return match stream.read(&mut buf) {
-        Ok(size) => {
-            let c = buf; //get all the bytes
-            println!("c = {:?} \n ###", &c[0..size].to_vec());
-            from_utf8(&c).unwrap().to_string()
-        }
-        Err(e) => {
-            println!("Failed to receive data: {}", e);
-            "".to_string()
-        }
-    };
+    let mut data = [0u8; 200]; // using 200 byte buffer
+    let bytes_read = stream.read(&mut data).expect("tcp read failed");
+    println!("Received bytes > {} ", bytes_read);
+    let c = data; //get all the bytes
+    println!("c = {:?} \n ###", c);
+    from_utf8(&c).unwrap().to_string()
 }
