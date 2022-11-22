@@ -27,11 +27,19 @@ impl TcpInterfaceTrait for TcpInterface {
     }
 
     fn display_menu(&mut self) {
-        self.tcp.send("menuxwcwxcwxcwxcwxcwxcwxcwxcwxcw");
+        let message = String::from("a");
+        self.tcp.send(message);
+        let message = String::from("Bienvenue sur KeySafe, veuillez choisir une option :");
+        self.tcp.send(message);
+        let message = String::from("1. Créer un compte");
+        self.tcp.send(message);
+        let message = String::from("2. Se connecter");
+        self.tcp.send(message);
     }
 
     fn display_create_account_success(&mut self) {
-        self.tcp.send("compte créé avec succes");
+        let message = String::from("Votre compte a bien été créé !");
+        self.tcp.send(message);
     }
 
     fn create_account(&mut self) -> Result<User, std::io::Error> {
@@ -83,8 +91,8 @@ impl TcpInterfaceTrait for TcpInterface {
     }
 
     fn ask_choice(&mut self) -> Result<String, std::io::Error> {
-        let mut choice = String::new();
-        io::stdin().read_line(&mut choice).expect("");
+        println!("ask user choice:");
+        let choice = self.tcp.ask();
         Ok(choice.trim().to_string())
     }
 

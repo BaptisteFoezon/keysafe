@@ -171,10 +171,9 @@ impl StateMachineTrait for SM {
     fn print_menu(&mut self) -> () {
         match self.state {
             LogOut => {
-                println!("print_menu from LogOut state");
                 let mut choice = String::new();
                 self.interface.display_menu();
-                let result = io::stdin().read_line(&mut choice);
+                let result = self.interface.ask_choice();
                 match result {
                     Ok(_) => {}
                     Err(_) => {
